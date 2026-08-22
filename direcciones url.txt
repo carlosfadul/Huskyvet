@@ -1,0 +1,6 @@
+login http://localhost:4200/auth o simplemente http://localhost:4200
+veterinarias http://localhost:4200/veterinarias
+sucursales crud http://localhost:4200/veterinaria/26/sucursales (a esto se accede desde la veterinaria)
+dashboard sucursal http://localhost:4200/veterinaria/26/sucursal/20/dashboard (el 26 sería el id de la veterinaria y el 20 id sucursal)
+
+Para ejecutar el servidor del backend npx nodemon server.js

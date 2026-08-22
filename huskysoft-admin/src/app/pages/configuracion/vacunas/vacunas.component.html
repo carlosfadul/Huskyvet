@@ -1,0 +1,86 @@
+<mat-card>
+  <!-- Barra superior con volver + nuevo -->
+  <div class="header-row">
+    <button
+      mat-stroked-button
+      color="primary"
+      [routerLink]="['../']"
+      class="btn-volver"
+    >
+      ← Volver a Configuración
+    </button>
+
+    <span class="spacer"></span>
+
+    <button
+      mat-flat-button
+      color="primary"
+      (click)="nuevaVacuna()"
+    >
+      + Nueva Vacuna
+    </button>
+  </div>
+
+  <h2>Vacunas</h2>
+
+  <table
+    mat-table
+    [dataSource]="vacunas"
+    class="mat-elevation-z8"
+    *ngIf="vacunas && vacunas.length"
+  >
+    <!-- Nombre -->
+    <ng-container matColumnDef="nombre">
+      <th mat-header-cell *matHeaderCellDef>Nombre</th>
+      <td mat-cell *matCellDef="let v">{{ v.vacuna_nombre }}</td>
+    </ng-container>
+
+    <!-- Laboratorio -->
+    <ng-container matColumnDef="laboratorio">
+      <th mat-header-cell *matHeaderCellDef>Laboratorio</th>
+      <td mat-cell *matCellDef="let v">{{ v.vacuna_laboratorio }}</td>
+    </ng-container>
+
+    <!-- Especies -->
+    <ng-container matColumnDef="especies">
+      <th mat-header-cell *matHeaderCellDef>Especies</th>
+      <td mat-cell *matCellDef="let v">{{ v.especie_destinada }}</td>
+    </ng-container>
+
+    <!-- Frecuencia -->
+    <ng-container matColumnDef="frecuencia">
+      <th mat-header-cell *matHeaderCellDef>Frecuencia</th>
+      <td mat-cell *matCellDef="let v">
+        {{ v.frecuencia_meses }} meses
+      </td>
+    </ng-container>
+
+    <!-- 🔹 NUEVA COLUMNA DETALLES -->
+    <ng-container matColumnDef="detalles">
+      <th mat-header-cell *matHeaderCellDef>Detalles</th>
+      <td mat-cell *matCellDef="let v">
+        {{ v.vacuna_detalles || '—' }}
+      </td>
+    </ng-container>
+
+    <!-- Acciones -->
+    <ng-container matColumnDef="acciones">
+      <th mat-header-cell *matHeaderCellDef>Acciones</th>
+      <td mat-cell *matCellDef="let v">
+        <button mat-icon-button color="primary" (click)="editarVacuna(v)">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" (click)="eliminarVacuna(v)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+
+  <p *ngIf="!vacunas || vacunas.length === 0">
+    No hay vacunas registradas.
+  </p>
+</mat-card>

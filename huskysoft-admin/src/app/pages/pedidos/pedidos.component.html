@@ -1,0 +1,95 @@
+<!-- src/app/pages/pedidos/pedidos.component.html -->
+
+<div class="panel-container">
+
+  <!-- Encabezado -->
+  <div class="header-row">
+    <h2>Pedidos de la sucursal</h2>
+
+    <span class="spacer"></span>
+
+    <!-- Botón Volver a Sucursales -->
+    <button
+      mat-stroked-button
+      color="primary"
+      [routerLink]="['/veterinaria', veterinariaId, 'admin']"
+    >
+      <mat-icon>arrow_back</mat-icon>
+      <span>Volver a Sucursales</span>
+    </button>
+
+    <!-- Botón Nueva compra -->
+    <button
+      mat-raised-button
+      color="primary"
+      class="ml-8"
+      (click)="nuevoPedido()"
+    >
+      <mat-icon>add_shopping_cart</mat-icon>
+      <span>Nueva compra</span>
+    </button>
+  </div>
+
+  <!-- Tabla de pedidos -->
+  <table
+    mat-table
+    [dataSource]="dataSource"
+    class="mat-elevation-z1 full-width-table"
+  >
+    <!-- ID Pedido -->
+    <ng-container matColumnDef="pedido_id">
+      <th mat-header-cell *matHeaderCellDef># Pedido</th>
+      <td mat-cell *matCellDef="let p">{{ p.pedido_id }}</td>
+    </ng-container>
+
+    <!-- Fecha -->
+    <ng-container matColumnDef="pedido_fecha">
+      <th mat-header-cell *matHeaderCellDef>Fecha</th>
+      <td mat-cell *matCellDef="let p">{{ p.pedido_fecha | date:'shortDate' }}</td>
+    </ng-container>
+
+    <!-- Proveedor -->
+    <ng-container matColumnDef="proveedor_id">
+      <th mat-header-cell *matHeaderCellDef>Proveedor</th>
+      <td mat-cell *matCellDef="let p">{{ p.proveedor_id }}</td>
+    </ng-container>
+
+    <!-- Total -->
+    <ng-container matColumnDef="total">
+      <th mat-header-cell *matHeaderCellDef>Total</th>
+      <td mat-cell *matCellDef="let p">{{ p.total | currency:'USD':'symbol' }}</td>
+    </ng-container>
+
+    <!-- Estado -->
+    <ng-container matColumnDef="pedido_estado">
+      <th mat-header-cell *matHeaderCellDef>Estado</th>
+      <td mat-cell *matCellDef="let p">{{ p.pedido_estado }}</td>
+    </ng-container>
+
+    <!-- Acciones -->
+    <ng-container matColumnDef="acciones">
+      <th mat-header-cell *matHeaderCellDef>Acciones</th>
+      <td mat-cell *matCellDef="let p">
+        <button mat-icon-button (click)="editarPedido(p)" matTooltip="Editar">
+          <mat-icon>edit</mat-icon>
+        </button>
+
+        <button
+          mat-icon-button
+          color="warn"
+          (click)="eliminarPedido(p)"
+          matTooltip="Eliminar"
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+
+  <p *ngIf="!dataSource.data.length && !cargando" class="empty-text">
+    No hay pedidos registrados.
+  </p>
+</div>

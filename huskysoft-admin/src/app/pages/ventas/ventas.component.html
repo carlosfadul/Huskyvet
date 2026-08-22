@@ -1,0 +1,88 @@
+<!-- src/app/pages/ventas/ventas.component.html -->
+
+<div class="page-container">
+
+  <div class="page-header">
+    <div class="page-title-group">
+      <h2>Ventas</h2>
+      <p class="page-subtitle">Gestion de ventas de la sucursal</p>
+    </div>
+
+    <div class="header-actions">
+      <button mat-stroked-button class="btn-back" [routerLink]="['/veterinaria', veterinariaId, 'admin']">
+        <mat-icon>arrow_back</mat-icon>
+        <span>Volver a Sucursales</span>
+      </button>
+      <button mat-raised-button class="btn-primary" (click)="nuevaVenta()">
+        <mat-icon>add</mat-icon>
+        <span>Nueva venta</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="table-card" *ngIf="dataSource.data.length">
+    <table mat-table [dataSource]="dataSource" class="full-width-table">
+
+      <ng-container matColumnDef="venta_id">
+        <th mat-header-cell *matHeaderCellDef># Venta</th>
+        <td mat-cell *matCellDef="let v"><span class="cell-strong">{{ v.venta_id }}</span></td>
+      </ng-container>
+
+      <ng-container matColumnDef="cliente_id">
+        <th mat-header-cell *matHeaderCellDef>Cliente</th>
+        <td mat-cell *matCellDef="let v">{{ v.cliente_id }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="venta_fecha">
+        <th mat-header-cell *matHeaderCellDef>Fecha</th>
+        <td mat-cell *matCellDef="let v">{{ v.venta_fecha | date:'short' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="venta_estado">
+        <th mat-header-cell *matHeaderCellDef>Estado</th>
+        <td mat-cell *matCellDef="let v">
+          <span [class.estado-activo]="v.venta_estado === 'completada'"
+                [class.estado-inactivo]="v.venta_estado === 'cancelada'"
+                [class.estado-pendiente]="v.venta_estado === 'pendiente'">
+            {{ v.venta_estado }}
+          </span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="total">
+        <th mat-header-cell *matHeaderCellDef>Total</th>
+        <td mat-cell *matCellDef="let v"><span class="cell-strong">{{ v.total | currency:'COP':'symbol':'1.0-0' }}</span></td>
+      </ng-container>
+
+      <ng-container matColumnDef="metodo_pago">
+        <th mat-header-cell *matHeaderCellDef>Metodo</th>
+        <td mat-cell *matCellDef="let v">{{ v.metodo_pago }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="acciones">
+        <th mat-header-cell *matHeaderCellDef class="actions-header">Acciones</th>
+        <td mat-cell *matCellDef="let v" class="actions-cell">
+          <button mat-icon-button (click)="editarVenta(v)" matTooltip="Editar">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button (click)="verDetalle(v)" matTooltip="Detalle de venta">
+            <mat-icon>receipt_long</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="eliminarVenta(v)" matTooltip="Eliminar">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+
+  <div class="empty-state" *ngIf="!dataSource.data.length && !cargando">
+    <mat-icon>point_of_sale</mat-icon>
+    <p>No hay ventas registradas.</p>
+    <span>Registra una nueva venta para comenzar.</span>
+  </div>
+
+</div>

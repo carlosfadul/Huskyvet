@@ -1,0 +1,237 @@
+<div class="page">
+  <!-- Encabezado -->
+  <div class="header">
+    <button mat-button (click)="volver()">
+      <mat-icon>arrow_back</mat-icon>
+      Volver
+    </button>
+    <h2>Detalle de Nómina #{{ nominaId }}</h2>
+  </div>
+
+  <!-- Formulario de creación -->
+  <form [formGroup]="form" class="panel" (ngSubmit)="crear()">
+    <mat-form-field appearance="outline">
+      <mat-label>Empleado</mat-label>
+      <mat-select formControlName="empleado_id">
+        <mat-option [value]="null">Seleccione…</mat-option>
+        <mat-option *ngFor="let e of empleados()" [value]="e.empleado_id">
+          {{ e.empleado_nombre }} {{ e.empleado_apellido }}
+          <span *ngIf="e.empleado_cedula">({{ e.empleado_cedula }})</span>
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Cant. horas</mat-label>
+      <input matInput type="number" formControlName="cantidad_horas" min="0">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Valor hora</mat-label>
+      <input matInput type="number" formControlName="valor_hora" step="0.01" min="0">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Horas extras</mat-label>
+      <input matInput type="number" formControlName="horas_extras" min="0">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Valor horas extras</mat-label>
+      <input matInput type="number" formControlName="valor_horas_extras" step="0.01" min="0">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Bonificaciones</mat-label>
+      <input matInput type="number" formControlName="bonificaciones" step="0.01" min="0">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Descuentos</mat-label>
+      <input matInput type="number" formControlName="descuentos" step="0.01" min="0">
+    </mat-form-field>
+
+    <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid">
+      Agregar
+    </button>
+  </form>
+
+  <!-- Tabla de detalles -->
+  <div class="table-wrap" *ngIf="!cargando(); else cargandoTpl">
+    <table mat-table [dataSource]="detalles()" class="mat-elevation-z2">
+
+      <!-- Empleado -->
+      <ng-container matColumnDef="empleado">
+        <th mat-header-cell *matHeaderCellDef>Empleado</th>
+        <td mat-cell *matCellDef="let row">
+          <ng-container *ngIf="editRowId !== row.detalleNomina_id; else editarEmpleado">
+            {{ row.empleado_nombre || nombreEmpleado(row.empleado_id) }}
+            <span *ngIf="row.empleado_cedula"> ({{ row.empleado_cedula }})</span>
+          </ng-container>
+
+          <ng-template #editarEmpleado>
+            <ng-container [formGroup]="editForms[row.detalleNomina_id]">
+              <mat-form-field class="cell-field" appearance="outline">
+                <mat-select formControlName="empleado_id">
+                  <mat-option *ngFor="let e of empleados()" [value]="e.empleado_id">
+                    {{ e.empleado_nombre }} {{ e.empleado_apellido }}
+                    <span *ngIf="e.empleado_cedula">({{ e.empleado_cedula }})</span>
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </ng-container>
+          </ng-template>
+        </td>
+      </ng-container>
+
+      <!-- Cantidad de horas -->
+      <ng-container matColumnDef="cantHoras">
+        <th mat-header-cell *matHeaderCellDef>Horas</th>
+        <td mat-cell *matCellDef="let row">
+          <ng-container *ngIf="editRowId !== row.detalleNomina_id; else editarCant">
+            {{ row.cantidad_horas }}
+          </ng-container>
+
+          <ng-template #editarCant>
+            <ng-container [formGroup]="editForms[row.detalleNomina_id]">
+              <mat-form-field class="cell-field" appearance="outline">
+                <input matInput type="number" formControlName="cantidad_horas">
+              </mat-form-field>
+            </ng-container>
+          </ng-template>
+        </td>
+      </ng-container>
+
+      <!-- Valor hora -->
+      <ng-container matColumnDef="valorHora">
+        <th mat-header-cell *matHeaderCellDef>$ Hora</th>
+        <td mat-cell *matCellDef="let row">
+          <ng-container *ngIf="editRowId !== row.detalleNomina_id; else editarValorHora">
+            {{ row.valor_hora | number:'1.0-2' }}
+          </ng-container>
+
+          <ng-template #editarValorHora>
+            <ng-container [formGroup]="editForms[row.detalleNomina_id]">
+              <mat-form-field class="cell-field" appearance="outline">
+                <input matInput type="number" step="0.01" formControlName="valor_hora">
+              </mat-form-field>
+            </ng-container>
+          </ng-template>
+        </td>
+      </ng-container>
+
+      <!-- Horas extras -->
+      <ng-container matColumnDef="extras">
+        <th mat-header-cell *matHeaderCellDef>Extras</th>
+        <td mat-cell *matCellDef="let row">
+          <ng-container *ngIf="editRowId !== row.detalleNomina_id; else editarExtras">
+            {{ row.horas_extras || 0 }}
+          </ng-container>
+
+          <ng-template #editarExtras>
+            <ng-container [formGroup]="editForms[row.detalleNomina_id]">
+              <mat-form-field class="cell-field" appearance="outline">
+                <input matInput type="number" formControlName="horas_extras">
+              </mat-form-field>
+            </ng-container>
+          </ng-template>
+        </td>
+      </ng-container>
+
+      <!-- Valor horas extras -->
+      <ng-container matColumnDef="valorExtras">
+        <th mat-header-cell *matHeaderCellDef>$ Extras</th>
+        <td mat-cell *matCellDef="let row">
+          <ng-container *ngIf="editRowId !== row.detalleNomina_id; else editarValorExtras">
+            {{ row.valor_horas_extras || 0 | number:'1.0-2' }}
+          </ng-container>
+
+          <ng-template #editarValorExtras>
+            <ng-container [formGroup]="editForms[row.detalleNomina_id]">
+              <mat-form-field class="cell-field" appearance="outline">
+                <input matInput type="number" step="0.01" formControlName="valor_horas_extras">
+              </mat-form-field>
+            </ng-container>
+          </ng-template>
+        </td>
+      </ng-container>
+
+      <!-- Bonificaciones -->
+      <ng-container matColumnDef="bonif">
+        <th mat-header-cell *matHeaderCellDef>Bonif.</th>
+        <td mat-cell *matCellDef="let row">
+          <ng-container *ngIf="editRowId !== row.detalleNomina_id; else editarBonif">
+            {{ row.bonificaciones || 0 | number:'1.0-2' }}
+          </ng-container>
+
+          <ng-template #editarBonif>
+            <ng-container [formGroup]="editForms[row.detalleNomina_id]">
+              <mat-form-field class="cell-field" appearance="outline">
+                <input matInput type="number" step="0.01" formControlName="bonificaciones">
+              </mat-form-field>
+            </ng-container>
+          </ng-template>
+        </td>
+      </ng-container>
+
+      <!-- Descuentos -->
+      <ng-container matColumnDef="desc">
+        <th mat-header-cell *matHeaderCellDef>Desc.</th>
+        <td mat-cell *matCellDef="let row">
+          <ng-container *ngIf="editRowId !== row.detalleNomina_id; else editarDesc">
+            {{ row.descuentos || 0 | number:'1.0-2' }}
+          </ng-container>
+
+          <ng-template #editarDesc>
+            <ng-container [formGroup]="editForms[row.detalleNomina_id]">
+              <mat-form-field class="cell-field" appearance="outline">
+                <input matInput type="number" step="0.01" formControlName="descuentos">
+              </mat-form-field>
+            </ng-container>
+          </ng-template>
+        </td>
+      </ng-container>
+
+      <!-- Subtotal -->
+      <ng-container matColumnDef="subtotal">
+        <th mat-header-cell *matHeaderCellDef>Subtotal</th>
+        <td mat-cell *matCellDef="let row">
+          {{ row.subtotal | number:'1.0-2' }}
+        </td>
+      </ng-container>
+
+      <!-- Acciones -->
+      <ng-container matColumnDef="acciones">
+        <th mat-header-cell *matHeaderCellDef>Acciones</th>
+        <td mat-cell *matCellDef="let row">
+          <ng-container *ngIf="editRowId !== row.detalleNomina_id; else botonesEditar">
+            <button mat-icon-button color="primary" (click)="editarFila(row.detalleNomina_id)">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="eliminar(row)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </ng-container>
+
+          <ng-template #botonesEditar>
+            <button mat-stroked-button color="primary" (click)="guardarEdicion(row)">
+              <mat-icon>save</mat-icon> Guardar
+            </button>
+            <button mat-stroked-button (click)="cancelarEdicion()">
+              <mat-icon>close</mat-icon> Cancelar
+            </button>
+          </ng-template>
+        </td>
+      </ng-container>
+
+      <!-- Filas -->
+      <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+      <tr mat-row *matRowDef="let row; columns: columnas"></tr>
+    </table>
+  </div>
+
+  <!-- Estado de carga -->
+  <ng-template #cargandoTpl>
+    <p>Cargando…</p>
+  </ng-template>
+</div>

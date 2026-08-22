@@ -1,0 +1,103 @@
+<!-- src/app/pages/veterinaria-admin/veterinaria-admin.component.html -->
+
+<div class="page-container">
+
+  <!-- Header -->
+  <div class="page-header">
+    <div class="page-title-group">
+      <div class="back-row">
+        <button mat-stroked-button class="btn-back" (click)="volverAVeterinarias()">
+          <mat-icon>arrow_back</mat-icon>
+          <span>Volver a Veterinarias</span>
+        </button>
+      </div>
+      <h2>Sucursales</h2>
+      <p class="page-subtitle">Administra las sucursales de la veterinaria #{{ veterinariaId }}</p>
+    </div>
+    <button mat-raised-button class="btn-primary" (click)="crearSucursal()">
+      <mat-icon>add</mat-icon>
+      <span>Nueva Sucursal</span>
+    </button>
+  </div>
+
+  <!-- Table card -->
+  <div class="table-card" *ngIf="sucursales.length">
+    <table mat-table [dataSource]="sucursales" class="full-width-table">
+
+      <!-- Logo -->
+      <ng-container matColumnDef="logo">
+        <th mat-header-cell *matHeaderCellDef>Logo</th>
+        <td mat-cell *matCellDef="let s">
+          <div class="logo-cell">
+            <img
+              *ngIf="s.sucursal_logo"
+              [src]="'http://localhost:3000/api/sucursales/' + s.sucursal_id + '/logo'"
+              class="suc-logo"
+            />
+            <div class="logo-placeholder" *ngIf="!s.sucursal_logo">
+              <mat-icon>store</mat-icon>
+            </div>
+          </div>
+        </td>
+      </ng-container>
+
+      <!-- Nombre -->
+      <ng-container matColumnDef="nombre">
+        <th mat-header-cell *matHeaderCellDef>Nombre</th>
+        <td mat-cell *matCellDef="let s">
+          <span class="cell-strong">{{ s.sucursal_nombre }}</span>
+        </td>
+      </ng-container>
+
+      <!-- Direccion -->
+      <ng-container matColumnDef="direccion">
+        <th mat-header-cell *matHeaderCellDef>Direccion</th>
+        <td mat-cell *matCellDef="let s">{{ s.sucursal_direccion || '—' }}</td>
+      </ng-container>
+
+      <!-- Telefono -->
+      <ng-container matColumnDef="telefono">
+        <th mat-header-cell *matHeaderCellDef>Telefono</th>
+        <td mat-cell *matCellDef="let s">{{ s.sucursal_telefono || '—' }}</td>
+      </ng-container>
+
+      <!-- Estado -->
+      <ng-container matColumnDef="estado">
+        <th mat-header-cell *matHeaderCellDef>Estado</th>
+        <td mat-cell *matCellDef="let s">
+          <span [class.estado-activo]="s.sucursal_estado === 'activa' || s.sucursal_estado === 'Activo'"
+                [class.estado-inactivo]="s.sucursal_estado !== 'activa' && s.sucursal_estado !== 'Activo'">
+            {{ s.sucursal_estado }}
+          </span>
+        </td>
+      </ng-container>
+
+      <!-- Acciones -->
+      <ng-container matColumnDef="acciones">
+        <th mat-header-cell *matHeaderCellDef class="actions-header">Acciones</th>
+        <td mat-cell *matCellDef="let s" class="actions-cell">
+          <button mat-icon-button (click)="irADashboard(s)" matTooltip="Abrir panel">
+            <mat-icon>open_in_new</mat-icon>
+          </button>
+          <button mat-icon-button color="primary" (click)="editarSucursal(s)" matTooltip="Editar">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="eliminarSucursal(s.sucursal_id)" matTooltip="Eliminar">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+      <tr mat-row *matRowDef="let row; columns: columnas;"></tr>
+    </table>
+  </div>
+
+  <!-- Empty state -->
+  <div class="empty-state" *ngIf="!sucursales.length">
+    <mat-icon>store</mat-icon>
+    <p>No hay sucursales registradas.</p>
+    <span>Crea una nueva sucursal para comenzar.</span>
+  </div>
+
+</div>

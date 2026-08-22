@@ -1,0 +1,47 @@
+<h2 mat-dialog-title>{{ titulo }}</h2>
+
+<div mat-dialog-content [formGroup]="form" class="form-container">
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Proveedor</mat-label>
+    <mat-select formControlName="proveedor_id">
+      <mat-option *ngFor="let pr of proveedores" [value]="pr.proveedor_id">
+        {{ pr.nombre_proveedor || pr.proveedor_nombre || pr.proveedor_id }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Fecha del pedido</mat-label>
+    <input matInput [matDatepicker]="picker" formControlName="pedido_fecha" />
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Estado</mat-label>
+    <mat-select formControlName="pedido_estado">
+      <mat-option *ngFor="let e of estados" [value]="e">{{ e }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Detalles / observaciones</mat-label>
+    <textarea
+      matInput
+      rows="3"
+      formControlName="pedido_detalles"
+    ></textarea>
+  </mat-form-field>
+</div>
+
+<div mat-dialog-actions align="end">
+  <button mat-button (click)="cancelar()">Cancelar</button>
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="guardar()"
+    [disabled]="guardando || form.invalid"
+  >
+    Guardar
+  </button>
+</div>

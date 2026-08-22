@@ -1,0 +1,24 @@
+<h2>Servicio del Aliado</h2>
+
+<form [formGroup]="form">
+  
+  <label>Nombre</label>
+  <input type="text" formControlName="nombre_servicioAliado">
+
+  <label>Detalles</label>
+  <textarea formControlName="detalle_servicioAliado"></textarea>
+
+  <label>Precio</label>
+  <input type="number" formControlName="precio_servicio">
+
+  <label>Estado</label>
+  <select formControlName="servicio_estado">
+    <option value="activo">Activo</option>
+    <option value="inactivo">Inactivo</option>
+  </select>
+
+  <div class="botones">
+    <button mat-button (click)="cancelar()">Cancelar</button>
+    <button mat-flat-button color="primary" (click)="guardar()">Guardar</button>
+  </div>
+</form>

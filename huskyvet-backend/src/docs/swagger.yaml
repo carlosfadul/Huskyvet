@@ -1,0 +1,15 @@
+openapi: 3.0.3
+info:
+  title: Huskyvet API
+  version: "1.0.0"
+  description: Documentación inicial de la API Huskyvet
+servers:
+  - url: http://localhost:3000
+    description: Servidor local
+paths:
+  /api/health:
+    get:
+      summary: Verifica que el servidor esté funcionando
+      responses:
+        "200":
+          description: Servidor en ejecución

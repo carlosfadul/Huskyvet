@@ -1,0 +1,81 @@
+<div class="app-fondo">
+  <div class="app-contenido">
+    <mat-card>
+      <h2>Mascotas de la Sucursal</h2>
+
+      <div class="acciones">
+        <button mat-stroked-button color="accent" (click)="volverASucursales()">
+          ← Volver a Sucursales
+        </button>
+      </div>
+
+      <table
+        mat-table
+        [dataSource]="mascotas"
+        class="mat-elevation-z8"
+        *ngIf="mascotas.length"
+      >
+        <!-- FOTO -->
+        <ng-container matColumnDef="foto">
+          <th mat-header-cell *matHeaderCellDef>Foto</th>
+          <td mat-cell *matCellDef="let m">
+            <img
+              *ngIf="m.mascota_foto"
+              [src]="'http://localhost:3000/api/mascotas/' + m.mascota_id + '/foto'"
+              width="50"
+              height="50"
+              style="object-fit: cover; border-radius: 8px"
+            />
+          </td>
+        </ng-container>
+
+        <!-- NOMBRE -->
+        <ng-container matColumnDef="nombre">
+          <th mat-header-cell *matHeaderCellDef>Nombre</th>
+          <td mat-cell *matCellDef="let m">{{ m.mascota_nombre }}</td>
+        </ng-container>
+
+        <!-- ESPECIE -->
+        <ng-container matColumnDef="especie">
+          <th mat-header-cell *matHeaderCellDef>Especie</th>
+          <td mat-cell *matCellDef="let m">{{ m.mascota_especie }}</td>
+        </ng-container>
+
+        <!-- SEXO -->
+        <ng-container matColumnDef="sexo">
+          <th mat-header-cell *matHeaderCellDef>Sexo</th>
+          <td mat-cell *matCellDef="let m">{{ m.mascota_sexo }}</td>
+        </ng-container>
+
+        <!-- ESTADO -->
+        <ng-container matColumnDef="estado">
+          <th mat-header-cell *matHeaderCellDef>Estado</th>
+          <td mat-cell *matCellDef="let m">{{ m.mascota_estado }}</td>
+        </ng-container>
+
+        <!-- DUEÑO -->
+        <ng-container matColumnDef="dueno">
+          <th mat-header-cell *matHeaderCellDef>Dueño</th>
+          <td mat-cell *matCellDef="let m">
+            {{ m.cliente_nombre }} {{ m.cliente_apellido }} ({{ m.cliente_cedula }})
+          </td>
+        </ng-container>
+
+        <!-- ACCIONES -->
+        <ng-container matColumnDef="acciones">
+          <th mat-header-cell *matHeaderCellDef>Acciones</th>
+          <td mat-cell *matCellDef="let m">
+            <button mat-icon-button color="primary" (click)="verDetalle(m)">
+              <mat-icon>visibility</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+        <tr mat-row *matRowDef="let row; columns: columnas"></tr>
+      </table>
+
+      <p *ngIf="mascotas.length === 0">No hay mascotas registradas.</p>
+    </mat-card>
+  </div>
+</div>

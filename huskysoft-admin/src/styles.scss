@@ -1,0 +1,239 @@
+/* ============================================================
+   Huskyvet — Global Styles
+   Color system: teal/cyan primary, neutral grays, warm accents
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  /* Primary ramp (teal) */
+  --hv-primary-50:  #e0f7f5;
+  --hv-primary-100: #b2ebe6;
+  --hv-primary-200: #80dcd4;
+  --hv-primary-300: #4dc9bd;
+  --hv-primary-400: #26b8aa;
+  --hv-primary-500: #00a896;
+  --hv-primary-600: #009687;
+  --hv-primary-700: #007a6e;
+  --hv-primary-800: #005f57;
+  --hv-primary-900: #004440;
+
+  /* Accent ramp (warm amber) */
+  --hv-accent-50:  #fff8e6;
+  --hv-accent-100: #ffedd0;
+  --hv-accent-200: #ffd9a0;
+  --hv-accent-300: #ffc570;
+  --hv-accent-400: #ffb14a;
+  --hv-accent-500: #f59e0b;
+  --hv-accent-600: #d98c04;
+  --hv-accent-700: #b87403;
+
+  /* Semantic */
+  --hv-success: #16a34a;
+  --hv-success-bg: rgba(22, 163, 74, 0.12);
+  --hv-warning: #f59e0b;
+  --hv-warning-bg: rgba(245, 158, 11, 0.12);
+  --hv-error: #dc2626;
+  --hv-error-bg: rgba(220, 38, 38, 0.12);
+
+  /* Neutrals */
+  --hv-gray-50:  #f9fafb;
+  --hv-gray-100: #f3f4f6;
+  --hv-gray-200: #e5e7eb;
+  --hv-gray-300: #d1d5db;
+  --hv-gray-400: #9ca3af;
+  --hv-gray-500: #6b7280;
+  --hv-gray-600: #4b5563;
+  --hv-gray-700: #374151;
+  --hv-gray-800: #1f2937;
+  --hv-gray-900: #111827;
+
+  /* Surfaces */
+  --hv-bg: #f0f4f5;
+  --hv-surface: #ffffff;
+  --hv-surface-alt: #f9fafb;
+  --hv-border: #e5e7eb;
+
+  /* Shadows */
+  --hv-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --hv-shadow-md: 0 4px 16px rgba(0, 0, 0, 0.10);
+  --hv-shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.14);
+
+  /* Radius */
+  --hv-radius-sm: 8px;
+  --hv-radius-md: 12px;
+  --hv-radius-lg: 16px;
+  --hv-radius-xl: 24px;
+
+  /* Spacing (8px base) */
+  --hv-space-1: 8px;
+  --hv-space-2: 16px;
+  --hv-space-3: 24px;
+  --hv-space-4: 32px;
+  --hv-space-5: 40px;
+  --hv-space-6: 48px;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: var(--hv-bg);
+  color: var(--hv-gray-800);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* Background image for the app */
+body {
+  background-image: url('assets/fondos/fondo-huskyvet.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+/* ---- Surface cards ---- */
+.mat-card,
+.mat-table,
+.mat-toolbar,
+mat-sidenav-container,
+.mat-sidenav-content {
+  background-color: var(--hv-surface);
+  border-radius: var(--hv-radius-md);
+}
+
+/* Do NOT blanket-remove shadows — let cards have depth */
+.mat-card {
+  box-shadow: var(--hv-shadow-md) !important;
+  border: 1px solid var(--hv-border);
+}
+
+/* ---- Form panel ---- */
+.formulario-panel {
+  background-color: var(--hv-surface);
+  border-radius: var(--hv-radius-md);
+  padding: var(--hv-space-3);
+  box-shadow: var(--hv-shadow-md);
+}
+
+/* ---- Dialog ---- */
+.mat-dialog-container {
+  background-color: var(--hv-surface) !important;
+  border-radius: var(--hv-radius-lg) !important;
+  padding: var(--hv-space-3) !important;
+  box-shadow: var(--hv-shadow-lg) !important;
+  border: 1px solid var(--hv-border);
+}
+
+/* Softer dialog backdrop */
+::ng-deep .cdk-overlay-backdrop {
+  background: rgba(17, 24, 39, 0.45) !important;
+  backdrop-filter: blur(2px);
+}
+
+/* ---- Tables ---- */
+.mat-table {
+  border-radius: var(--hv-radius-md);
+  overflow: hidden;
+  box-shadow: var(--hv-shadow-sm);
+}
+
+.mat-header-row {
+  background-color: var(--hv-gray-50);
+}
+
+.mat-header-cell {
+  font-weight: 600;
+  color: var(--hv-gray-700);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.mat-row:hover {
+  background-color: var(--hv-primary-50);
+  transition: background-color 0.15s ease;
+}
+
+.mat-cell {
+  font-size: 14px;
+  color: var(--hv-gray-800);
+}
+
+/* ---- Generic page container ---- */
+.app-fondo {
+  min-height: 100vh;
+  padding: var(--hv-space-3);
+  background-image: url('/assets/fondos/fondo-huskyvet.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+.app-contenido {
+  background-color: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(8px);
+  border-radius: var(--hv-radius-lg);
+  padding: var(--hv-space-3);
+  margin: var(--hv-space-2);
+  box-shadow: var(--hv-shadow-md);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+/* ---- Page heading ---- */
+h2 {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--hv-gray-900);
+  margin: 0 0 var(--hv-space-2) 0;
+  letter-spacing: -0.01em;
+}
+
+/* ---- Status badges ---- */
+.estado-activo {
+  color: var(--hv-success);
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background-color: var(--hv-success-bg);
+  font-size: 12px;
+  display: inline-block;
+}
+
+.estado-inactivo {
+  color: var(--hv-error);
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background-color: var(--hv-error-bg);
+  font-size: 12px;
+  display: inline-block;
+}
+
+/* ---- Button spacing ---- */
+.acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--hv-space-1);
+  margin-bottom: var(--hv-space-2);
+}
+
+/* ---- Scrollbar ---- */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--hv-gray-300);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--hv-gray-400);
+}

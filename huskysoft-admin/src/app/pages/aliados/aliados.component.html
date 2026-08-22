@@ -1,0 +1,77 @@
+<button mat-button class="white-button" (click)="volver()">← Volver</button>
+
+<h2>Aliados</h2>
+
+<button mat-raised-button color="primary" (click)="abrirFormulario()">+ Nuevo Aliado</button>
+
+<table mat-table [dataSource]="aliados" class="mat-elevation-z8">
+
+  <!-- Nombre -->
+  <ng-container matColumnDef="nombre_aliado">
+    <th mat-header-cell *matHeaderCellDef>Nombre</th>
+    <td mat-cell *matCellDef="let aliado">{{ aliado.nombre_aliado }}</td>
+  </ng-container>
+
+  <!-- Dirección -->
+  <ng-container matColumnDef="direccion_aliado">
+    <th mat-header-cell *matHeaderCellDef>Dirección</th>
+    <td mat-cell *matCellDef="let aliado">{{ aliado.direccion_aliado }}</td>
+  </ng-container>
+
+  <!-- Teléfono -->
+  <ng-container matColumnDef="telefono_aliado">
+    <th mat-header-cell *matHeaderCellDef>Teléfono</th>
+    <td mat-cell *matCellDef="let aliado">{{ aliado.telefono_aliado }}</td>
+  </ng-container>
+
+  <!-- Email -->
+  <ng-container matColumnDef="email_aliado">
+    <th mat-header-cell *matHeaderCellDef>Email</th>
+    <td mat-cell *matCellDef="let aliado">{{ aliado.email_aliado }}</td>
+  </ng-container>
+
+  <!-- NIT -->
+  <ng-container matColumnDef="nit_aliado">
+    <th mat-header-cell *matHeaderCellDef>NIT</th>
+    <td mat-cell *matCellDef="let aliado">{{ aliado.nit_aliado }}</td>
+  </ng-container>
+
+  <!-- Estado -->
+  <ng-container matColumnDef="aliado_estado">
+    <th mat-header-cell *matHeaderCellDef>Estado</th>
+    <td mat-cell *matCellDef="let aliado">{{ aliado.aliado_estado }}</td>
+  </ng-container>
+
+  <!-- ACCIONES -->
+  <ng-container matColumnDef="acciones">
+    <th mat-header-cell *matHeaderCellDef>Acciones</th>
+    <td mat-cell *matCellDef="let aliado" class="acciones-cell">
+
+      <!-- Editar -->
+      <button mat-icon-button color="primary" (click)="abrirFormulario(aliado)">
+        <mat-icon>edit</mat-icon>
+      </button>
+
+      <!-- Servicios del Aliado -->
+      <button mat-icon-button color="accent" (click)="irServiciosAliado(aliado.aliado_id)"
+              matTooltip="Servicios del aliado">
+        <mat-icon>list</mat-icon>
+      </button>
+
+      <!-- Eliminar -->
+      <button mat-icon-button color="warn" (click)="eliminarAliado(aliado.aliado_id)">
+        <mat-icon>delete</mat-icon>
+      </button>
+
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+  <tr mat-row *matRowDef="let row; columns: columnas"></tr>
+
+</table>
+
+<p *ngIf="aliados.length === 0">
+  No hay aliados registrados en esta sucursal.
+</p>
+

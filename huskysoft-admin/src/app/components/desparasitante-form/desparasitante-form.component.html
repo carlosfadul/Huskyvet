@@ -1,0 +1,58 @@
+<h2 mat-dialog-title>{{ titulo }}</h2>
+<div mat-dialog-content [formGroup]="form" class="form-grid">
+
+  <mat-form-field appearance="outline">
+    <mat-label>Nombre</mat-label>
+    <input matInput formControlName="desparasitante_nombre" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Laboratorio</mat-label>
+    <input matInput formControlName="desparasitante_laboratorio" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Detalles</mat-label>
+    <textarea matInput rows="3" formControlName="desparasitante_detalles"></textarea>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Tipo</mat-label>
+    <mat-select formControlName="tipo">
+      <mat-option [value]="null">Sin especificar</mat-option>
+      <mat-option *ngFor="let t of tipos" [value]="t">{{ t }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Especie destinada</mat-label>
+    <mat-select formControlName="especie_destinada" multiple>
+      <mat-option *ngFor="let e of especies" [value]="e">
+        {{ e }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Edad mínima (semanas)</mat-label>
+    <input matInput type="number" formControlName="edad_minima_semanas" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Peso mínimo (kg)</mat-label>
+    <input matInput type="number" step="0.01" formControlName="peso_minimo" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Peso máximo (kg)</mat-label>
+    <input matInput type="number" step="0.01" formControlName="peso_maximo" />
+  </mat-form-field>
+
+</div>
+
+<div mat-dialog-actions align="end">
+  <button mat-button (click)="cancelar()">Cancelar</button>
+  <button mat-flat-button color="primary" (click)="guardar()" [disabled]="form.invalid">
+    Guardar
+  </button>
+</div>

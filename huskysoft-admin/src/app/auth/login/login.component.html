@@ -1,0 +1,80 @@
+<div class="brand-panel">
+  <img src="/assets/img/Logo-Huskysoft.png" alt="Huskysoft" class="brand-logo" />
+  <h1 class="brand-title">Gestiona tu veterinaria de forma inteligente</h1>
+  <p class="brand-subtitle">
+    La plataforma todo-en-uno para administrar sucursales, clientes, mascotas,
+    inventario, ventas y mucho mas.
+  </p>
+
+  <div class="brand-features">
+    <div class="feature">
+      <mat-icon>pets</mat-icon>
+      <span>Historia clinica completa de mascotas</span>
+    </div>
+    <div class="feature">
+      <mat-icon>inventory_2</mat-icon>
+      <span>Control de inventario y ventas</span>
+    </div>
+    <div class="feature">
+      <mat-icon>groups</mat-icon>
+      <span>Gestion de empleados y nominas</span>
+    </div>
+  </div>
+</div>
+
+<div class="login-panel">
+  <mat-card class="login-card">
+    <mat-card-title>Iniciar Sesion</mat-card-title>
+    <p class="login-subtitle">Ingresa tus credenciales para continuar</p>
+
+    <div class="error-banner" *ngIf="errorMessage">
+      <mat-icon>error_outline</mat-icon>
+      <span>{{ errorMessage }}</span>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Usuario</mat-label>
+        <input matInput formControlName="username" placeholder="Ingresa tu usuario" required />
+        <mat-icon matPrefix>person</mat-icon>
+        <mat-error *ngIf="loginForm.get('username')?.hasError('required')">
+          El usuario es obligatorio
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Contrasena</mat-label>
+        <input
+          matInput
+          [type]="hide ? 'password' : 'text'"
+          formControlName="password"
+          placeholder="Ingresa tu contrasena"
+          required
+        />
+        <mat-icon matPrefix>lock</mat-icon>
+        <button type="button" mat-icon-button matSuffix (click)="hide = !hide">
+          <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+        <mat-error *ngIf="loginForm.get('password')?.hasError('required')">
+          La contrasena es obligatoria
+        </mat-error>
+      </mat-form-field>
+
+      <div class="extras">
+        <mat-checkbox>Recordarme</mat-checkbox>
+        <a class="forgot" href="#">Olvidaste tu contrasena?</a>
+      </div>
+
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        class="full-width login-btn"
+        [disabled]="loginForm.invalid || loading"
+      >
+        <mat-spinner *ngIf="loading" diameter="20" class="loading-spinner"></mat-spinner>
+        {{ loading ? 'Ingresando...' : 'Iniciar Sesion' }}
+      </button>
+    </form>
+  </mat-card>
+</div>

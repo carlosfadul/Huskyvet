@@ -1,0 +1,22 @@
+
+.botonera {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+  gap: 8px;
+  }
+
+  .white-button {
+    background-color: white;
+    color: #1976d2;
+    border-radius: 20px;
+    padding: 6px 16px;
+    font-weight: 500;
+    min-width: 150px;
+    height: 36px;
+    margin: 4px;
+    text-transform: none;
+  }
+  
+  

@@ -1,0 +1,43 @@
+<h2 mat-dialog-title>{{ titulo }}</h2>
+
+<div mat-dialog-content [formGroup]="form" class="form-container">
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Producto</mat-label>
+    <mat-select formControlName="producto_id">
+      <mat-option *ngFor="let p of productos" [value]="p.producto_id">
+        {{ p.nombre_producto }} (ID: {{ p.producto_id }})
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <div class="row">
+    <mat-form-field appearance="fill">
+      <mat-label>Cantidad solicitada</mat-label>
+      <input matInput type="number" formControlName="detallePedido_cantidad" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Cantidad recibida</mat-label>
+      <input matInput type="number" formControlName="cantidad_recibida" />
+    </mat-form-field>
+  </div>
+
+  <div class="row">
+    <mat-form-field appearance="fill">
+      <mat-label>Precio unitario</mat-label>
+      <input matInput type="number" formControlName="detallePedido_precio" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" disabled>
+      <mat-label>Subtotal</mat-label>
+      <input matInput [value]="subtotal | number : '1.2-2'" />
+    </mat-form-field>
+  </div>
+</div>
+
+<div mat-dialog-actions align="end">
+  <button mat-button (click)="cancelar()">Cancelar</button>
+  <button mat-raised-button color="primary" (click)="guardar()" [disabled]="guardando || form.invalid">
+    Guardar
+  </button>
+</div>

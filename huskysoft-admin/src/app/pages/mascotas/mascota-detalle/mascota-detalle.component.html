@@ -1,0 +1,359 @@
+<div class="app-fondo">
+  <div class="app-contenido">
+
+    <!-- Cabecera / info de la mascota -->
+    <button mat-stroked-button (click)="volver()">← Volver a Mascotas</button>
+
+    <mat-card *ngIf="mascota" class="info-mascota">
+      <div class="info-header">
+        <div>
+          <h2>{{ mascota.mascota_nombre }}</h2>
+          <p>
+            {{ mascota.mascota_especie }} •
+            {{ mascota.mascota_raza || 'Sin raza' }} •
+            {{ mascota.mascota_sexo }}
+          </p>
+          <p>
+            Dueño:
+            {{ mascota.cliente_nombre }} {{ mascota.cliente_apellido }}
+            ({{ mascota.cliente_cedula }})
+          </p>
+        </div>
+
+        <img
+          *ngIf="mascota.mascota_foto"
+          [src]="'http://localhost:3000/api/mascotas/' + mascota.mascota_id + '/foto'"
+          width="100" height="100"
+          style="object-fit: cover; border-radius: 8px"
+        />
+      </div>
+    </mat-card>
+
+    <!-- 🩺 Atenciones / Consultas -->
+    <mat-card class="card-atenciones">
+      <div class="titulo-acciones">
+        <h3>Atenciones / Consultas</h3>
+        <button mat-flat-button color="primary" (click)="nuevaAtencion()">
+          + Nueva Atención
+        </button>
+      </div>
+
+      <table
+        mat-table
+        [dataSource]="atenciones"
+        class="mat-elevation-z8"
+        *ngIf="atenciones && atenciones.length"
+      >
+        <!-- FECHA -->
+        <ng-container matColumnDef="fecha">
+          <th mat-header-cell *matHeaderCellDef>Fecha</th>
+          <td mat-cell *matCellDef="let a">
+            {{ a.atencion_fecha | date: 'shortDate' }}
+          </td>
+        </ng-container>
+
+        <!-- MOTIVO -->
+        <ng-container matColumnDef="motivo">
+          <th mat-header-cell *matHeaderCellDef>Motivo</th>
+          <td mat-cell *matCellDef="let a">
+            {{ a.atencion_motivo || a.motivo || a.motivo_consulta }}
+          </td>
+        </ng-container>
+
+        <!-- DIAGNÓSTICO -->
+        <ng-container matColumnDef="diagnostico">
+          <th mat-header-cell *matHeaderCellDef>Diagnóstico</th>
+          <td mat-cell *matCellDef="let a">{{ a.diagnostico }}</td>
+        </ng-container>
+
+        <!-- TRATAMIENTO -->
+        <ng-container matColumnDef="tratamiento">
+          <th mat-header-cell *matHeaderCellDef>Tratamiento</th>
+          <td mat-cell *matCellDef="let a">{{ a.tratamiento }}</td>
+        </ng-container>
+
+        <!-- OBSERVACIONES -->
+        <ng-container matColumnDef="observaciones">
+          <th mat-header-cell *matHeaderCellDef>Observaciones</th>
+          <td mat-cell *matCellDef="let a">{{ a.observaciones }}</td>
+        </ng-container>
+
+        <!-- ACCIONES -->
+        <ng-container matColumnDef="acciones">
+          <th mat-header-cell *matHeaderCellDef>Acciones</th>
+          <td mat-cell *matCellDef="let a">
+            <button mat-icon-button color="accent" (click)="verDetalleAtencion(a)">
+              <mat-icon>visibility</mat-icon>
+            </button>
+            <button mat-icon-button color="primary" (click)="editarAtencion(a)">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="eliminarAtencion(a)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="columnasAtenciones"></tr>
+        <tr mat-row *matRowDef="let row; columns: columnasAtenciones"></tr>
+      </table>
+
+      <p *ngIf="!atenciones || atenciones.length === 0">
+        Todavía no hay atenciones registradas.
+      </p>
+    </mat-card>
+
+    <!-- 💉 Vacunas aplicadas -->
+    <mat-card class="card-atenciones">
+      <div class="titulo-acciones">
+        <h3>Vacunas Aplicadas</h3>
+        <button mat-flat-button color="primary" (click)="nuevaVacuna()">
+          + Aplicar Vacuna
+        </button>
+      </div>
+
+      <table
+        mat-table
+        [dataSource]="vacunasAplicadas"
+        class="mat-elevation-z8"
+        *ngIf="vacunasAplicadas && vacunasAplicadas.length"
+      >
+        <!-- FECHA -->
+        <ng-container matColumnDef="fecha">
+          <th mat-header-cell *matHeaderCellDef>Fecha</th>
+          <td mat-cell *matCellDef="let v">
+            {{ v.fecha_aplicacion | date: 'shortDate' }}
+          </td>
+        </ng-container>
+
+        <!-- VACUNA -->
+        <ng-container matColumnDef="vacuna">
+          <th mat-header-cell *matHeaderCellDef>Vacuna</th>
+          <td mat-cell *matCellDef="let v">
+            {{ v.vacuna_nombre }}
+          </td>
+        </ng-container>
+
+        <!-- LOTE -->
+        <ng-container matColumnDef="lote">
+          <th mat-header-cell *matHeaderCellDef>Lote</th>
+          <td mat-cell *matCellDef="let v">
+            {{ v.lote }}
+          </td>
+        </ng-container>
+
+        <!-- ACCIONES -->
+        <ng-container matColumnDef="acciones">
+          <th mat-header-cell *matHeaderCellDef>Acciones</th>
+          <td mat-cell *matCellDef="let v">
+            <button mat-icon-button color="primary" (click)="editarVacuna(v)">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="eliminarVacuna(v)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="columnasVacunas"></tr>
+        <tr mat-row *matRowDef="let row; columns: columnasVacunas"></tr>
+      </table>
+
+      <p *ngIf="!vacunasAplicadas || vacunasAplicadas.length === 0">
+        Esta mascota aún no tiene vacunas registradas.
+      </p>
+    </mat-card>
+
+    <!-- 🪱 Desparasitaciones aplicadas -->
+    <mat-card class="card-atenciones">
+      <div class="titulo-acciones">
+        <h3>Desparasitaciones Aplicadas</h3>
+        <button mat-flat-button color="primary" (click)="nuevaDesparasitacion()">
+          + Aplicar Desparasitación
+        </button>
+      </div>
+
+      <table
+        mat-table
+        [dataSource]="desparasitacionesAplicadas"
+        class="mat-elevation-z8"
+        *ngIf="desparasitacionesAplicadas && desparasitacionesAplicadas.length"
+      >
+        <!-- FECHA -->
+        <ng-container matColumnDef="fecha">
+          <th mat-header-cell *matHeaderCellDef>Fecha</th>
+          <td mat-cell *matCellDef="let d">
+            {{ d.fecha_aplicacion | date: 'shortDate' }}
+          </td>
+        </ng-container>
+
+        <!-- DESPARASITANTE -->
+        <ng-container matColumnDef="desparasitante">
+          <th mat-header-cell *matHeaderCellDef>Desparasitante</th>
+          <td mat-cell *matCellDef="let d">
+            {{ d.desparasitante_nombre }}
+          </td>
+        </ng-container>
+
+        <!-- LOTE -->
+        <ng-container matColumnDef="lote">
+          <th mat-header-cell *matHeaderCellDef>Lote</th>
+          <td mat-cell *matCellDef="let d">
+            {{ d.lote }}
+          </td>
+        </ng-container>
+
+        <!-- ACCIONES -->
+        <ng-container matColumnDef="acciones">
+          <th mat-header-cell *matHeaderCellDef>Acciones</th>
+          <td mat-cell *matCellDef="let d">
+            <button mat-icon-button color="primary" (click)="editarDesparasitacion(d)">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="eliminarDesparasitacion(d)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="columnasDesparasitaciones"></tr>
+        <tr mat-row *matRowDef="let row; columns: columnasDesparasitaciones"></tr>
+      </table>
+
+      <p *ngIf="!desparasitacionesAplicadas || desparasitacionesAplicadas.length === 0">
+        Esta mascota aún no tiene desparasitaciones registradas.
+      </p>
+    </mat-card>
+
+    <!-- 🦠 Enfermedades -->
+    <mat-card class="card-atenciones">
+      <div class="titulo-acciones">
+        <h3>Enfermedades</h3>
+        <button mat-flat-button color="primary" (click)="registrarEnfermedad()">
+          + Registrar Enfermedad
+        </button>
+      </div>
+
+      <table
+        mat-table
+        [dataSource]="enfermedadesMascota"
+        class="mat-elevation-z8"
+        *ngIf="enfermedadesMascota && enfermedadesMascota.length"
+      >
+        <!-- FECHA -->
+        <ng-container matColumnDef="fecha">
+          <th mat-header-cell *matHeaderCellDef>Fecha</th>
+          <td mat-cell *matCellDef="let e">
+            {{ e.fecha_diagnostico | date: 'shortDate' }}
+          </td>
+        </ng-container>
+
+        <!-- ENFERMEDAD -->
+        <ng-container matColumnDef="enfermedad">
+          <th mat-header-cell *matHeaderCellDef>Enfermedad</th>
+          <td mat-cell *matCellDef="let e">
+            {{ e.enfermedad_nombre }}
+          </td>
+        </ng-container>
+
+        <!-- ESTADO -->
+        <ng-container matColumnDef="estado">
+          <th mat-header-cell *matHeaderCellDef>Estado</th>
+          <td mat-cell *matCellDef="let e">
+            {{ e.estado_enfermedad || e.estado }}
+          </td>
+        </ng-container>
+
+        <!-- ACCIONES -->
+        <ng-container matColumnDef="acciones">
+          <th mat-header-cell *matHeaderCellDef>Acciones</th>
+          <td mat-cell *matCellDef="let e">
+            <button mat-icon-button color="primary" (click)="editarEnfermedad(e)">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="eliminarEnfermedad(e)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="columnasEnfermedades"></tr>
+        <tr mat-row *matRowDef="let row; columns: columnasEnfermedades"></tr>
+      </table>
+
+      <p *ngIf="!enfermedadesMascota || enfermedadesMascota.length === 0">
+        No hay enfermedades registradas para esta mascota.
+      </p>
+    </mat-card>
+
+    <!-- 📄 Remisiones -->
+    <mat-card class="card-atenciones">
+      <div class="titulo-acciones">
+        <h3>Remisiones</h3>
+        <button mat-flat-button color="primary" (click)="nuevaRemision()">
+          + Nueva Remisión
+        </button>
+      </div>
+
+      <table
+        mat-table
+        [dataSource]="remisiones"
+        class="mat-elevation-z8"
+        *ngIf="remisiones && remisiones.length"
+      >
+        <!-- FECHA -->
+        <ng-container matColumnDef="fecha">
+          <th mat-header-cell *matHeaderCellDef>Fecha</th>
+          <td mat-cell *matCellDef="let r">
+            {{ r.fecha_remision | date: 'shortDate' }}
+          </td>
+        </ng-container>
+
+        <!-- ALIADO -->
+        <ng-container matColumnDef="aliado">
+          <th mat-header-cell *matHeaderCellDef>Aliado</th>
+          <td mat-cell *matCellDef="let r">
+            {{ r.nombre_aliado }}
+          </td>
+        </ng-container>
+
+        <!-- SERVICIOS -->
+        <ng-container matColumnDef="servicios">
+          <th mat-header-cell *matHeaderCellDef>Servicios</th>
+          <td mat-cell *matCellDef="let r">
+            {{ r.servicios_remision || r.servicio_resumen }}
+          </td>
+        </ng-container>
+
+        <!-- ESTADO -->
+        <ng-container matColumnDef="estado">
+          <th mat-header-cell *matHeaderCellDef>Estado</th>
+          <td mat-cell *matCellDef="let r">
+            {{ r.estado_remision || r.remision_estado }}
+          </td>
+        </ng-container>
+
+        <!-- ACCIONES -->
+        <ng-container matColumnDef="acciones">
+          <th mat-header-cell *matHeaderCellDef>Acciones</th>
+          <td mat-cell *matCellDef="let r">
+            <button mat-icon-button color="primary" (click)="editarRemision(r)">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="eliminarRemision(r)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="columnasRemisiones"></tr>
+        <tr mat-row *matRowDef="let row; columns: columnasRemisiones"></tr>
+      </table>
+
+      <p *ngIf="!remisiones || remisiones.length === 0">
+        No hay remisiones registradas para esta mascota.
+      </p>
+    </mat-card>
+
+  </div>
+</div>

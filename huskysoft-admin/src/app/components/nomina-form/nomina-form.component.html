@@ -1,0 +1,52 @@
+<form [formGroup]="form" (ngSubmit)="guardar()" class="formulario-nomina">
+  <div class="fila">
+    <mat-form-field appearance="fill" class="campo">
+      <mat-label>Fecha*</mat-label>
+      <input matInput [matDatepicker]="fecha" formControlName="nomina_fecha">
+      <mat-datepicker-toggle matSuffix [for]="fecha"></mat-datepicker-toggle>
+      <mat-datepicker #fecha></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="campo">
+      <mat-label>Inicio del período*</mat-label>
+      <input matInput [matDatepicker]="inicio" formControlName="nomina_periodo_inicio">
+      <mat-datepicker-toggle matSuffix [for]="inicio"></mat-datepicker-toggle>
+      <mat-datepicker #inicio></mat-datepicker>
+    </mat-form-field>
+  </div>
+
+  <div class="fila">
+    <mat-form-field appearance="fill" class="campo">
+      <mat-label>Fin del período*</mat-label>
+      <input matInput [matDatepicker]="fin" formControlName="nomina_periodo_fin">
+      <mat-datepicker-toggle matSuffix [for]="fin"></mat-datepicker-toggle>
+      <mat-datepicker #fin></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="campo">
+      <mat-label>Estado*</mat-label>
+      <mat-select formControlName="nomina_estado">
+        <mat-option *ngFor="let estado of estados" [value]="estado">
+          {{ estado }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="fila">
+    <mat-form-field appearance="fill" class="campo">
+      <mat-label>Observaciones</mat-label>
+      <textarea matInput formControlName="observaciones" rows="2"></textarea>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="campo">
+      <mat-label>Total nómina*</mat-label>
+      <input matInput type="number" formControlName="total_nomina">
+    </mat-form-field>
+  </div>
+
+  <div class="botones">
+    <button mat-button type="button" (click)="cancelar()">Cancelar</button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">Guardar</button>
+  </div>
+</form>

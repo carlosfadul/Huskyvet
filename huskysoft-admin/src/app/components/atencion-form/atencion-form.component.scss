@@ -1,0 +1,19 @@
+.atencion-form {
+  .row {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .full-width {
+    width: 100%;
+  }
+
+  .file-input {
+    margin-top: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 13px;
+  }
+}

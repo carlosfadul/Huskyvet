@@ -1,0 +1,129 @@
+.dashboard-container {
+  height: 100vh;
+  background-color: #f0f4f5;
+}
+
+/* ---- Sidebar ---- */
+.sidenav {
+  width: 260px;
+  background: linear-gradient(180deg, #004440 0%, #005f57 50%, #007a6e 100%) !important;
+  border: none !important;
+  border-radius: 0 !important;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.sidenav-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 24px 20px 20px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.sidenav-logo {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.sidenav-logo-icon {
+  color: #fff;
+  font-size: 26px;
+  width: 26px;
+  height: 26px;
+}
+
+.sidenav-brand {
+  display: flex;
+  flex-direction: column;
+}
+
+.brand-name {
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.01em;
+}
+
+.brand-sub {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 400;
+}
+
+/* ---- Nav items ---- */
+.nav-list {
+  flex: 1;
+  padding-top: 12px;
+  background: transparent !important;
+}
+
+::ng-deep .sidenav .mat-mdc-list-item {
+  margin: 2px 12px;
+  border-radius: 10px;
+  height: 48px !important;
+  color: rgba(255, 255, 255, 0.75) !important;
+  transition: background-color 0.18s ease, color 0.18s ease;
+}
+
+::ng-deep .sidenav .mat-mdc-list-item:hover {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+  color: #fff !important;
+}
+
+::ng-deep .sidenav .mat-mdc-list-item .mat-icon {
+  color: rgba(255, 255, 255, 0.6);
+  margin-right: 14px;
+}
+
+::ng-deep .sidenav .active-link {
+  background-color: rgba(255, 255, 255, 0.15) !important;
+  color: #fff !important;
+  font-weight: 600;
+}
+
+::ng-deep .sidenav .active-link .mat-icon {
+  color: #fff;
+}
+
+::ng-deep .sidenav .mat-mdc-list-item .mdc-list-item__primary-text {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.nav-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.12);
+  margin: 12px 20px;
+}
+
+/* ---- Sidebar footer ---- */
+.sidenav-footer {
+  padding-bottom: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+::ng-deep .sidenav-footer .mat-mdc-list-item {
+  margin: 8px 12px;
+  border-radius: 10px;
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+/* ---- Main content area ---- */
+.main-content {
+  background-color: #f0f4f5 !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+}
+
+.content-wrapper {
+  padding: 24px;
+  min-height: calc(100vh - 48px);
+}

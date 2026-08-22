@@ -1,0 +1,129 @@
+<div class="app-fondo">
+  <div class="app-contenido">
+
+    <!-- Cabecera / info de la mascota -->
+    <button mat-stroked-button (click)="volver()">← Volver a Mascotas</button>
+
+    <mat-card *ngIf="mascota" class="info-mascota">
+      <div class="info-header">
+        <div>
+          <h2>{{ mascota.mascota_nombre }}</h2>
+          <p>
+            {{ mascota.mascota_especie }} •
+            {{ mascota.mascota_raza || 'Sin raza' }} •
+            {{ mascota.mascota_sexo }}
+          </p>
+          <p>
+            Dueño:
+            {{ mascota.cliente_nombre }} {{ mascota.cliente_apellido }}
+            ({{ mascota.cliente_cedula }})
+          </p>
+        </div>
+
+        <img
+          *ngIf="mascota.mascota_foto"
+          [src]="'http://localhost:3000/api/mascotas/' + mascota.mascota_id + '/foto'"
+          width="100" height="100"
+          style="object-fit: cover; border-radius: 8px"
+        />
+      </div>
+    </mat-card>
+
+    <!-- Atenciones / Consultas -->
+    <mat-card class="card-atenciones">
+      <div class="titulo-acciones">
+        <h3>Atenciones / Consultas</h3>
+        <button mat-flat-button color="primary" (click)="nuevaAtencion()">
+          + Nueva Atención
+        </button>
+      </div>
+
+      <table mat-table [dataSource]="atenciones" class="mat-elevation-z8" *ngIf="atenciones.length">
+
+        <!-- FECHA -->
+        <ng-container matColumnDef="fecha">
+          <th mat-header-cell *matHeaderCellDef>Fecha</th>
+          <td mat-cell *matCellDef="let a">
+            {{ (a.atencion_fecha) | date: 'shortDate' }}
+          </td>
+        </ng-container>
+
+        <!-- MOTIVO -->
+        <ng-container matColumnDef="motivo">
+          <th mat-header-cell *matHeaderCellDef>Motivo</th>
+          <td mat-cell *matCellDef="let a">
+            {{ a.motivo || a.atencion_detalle || '—' }}
+          </td>
+        </ng-container>
+
+        <!-- DIAGNOSTICO -->
+        <ng-container matColumnDef="diagnostico">
+          <th mat-header-cell *matHeaderCellDef>Diagnóstico</th>
+          <td mat-cell *matCellDef="let a">
+            {{ a.diagnostico || '—' }}
+          </td>
+        </ng-container>
+
+        <!-- TRATAMIENTO -->
+        <ng-container matColumnDef="tratamiento">
+          <th mat-header-cell *matHeaderCellDef>Tratamiento</th>
+          <td mat-cell *matCellDef="let a">
+            {{ a.tratamiento || '—' }}
+          </td>
+        </ng-container>
+
+        <!-- OBSERVACIONES -->
+        <ng-container matColumnDef="observaciones">
+          <th mat-header-cell *matHeaderCellDef>Observaciones</th>
+          <td mat-cell *matCellDef="let a">
+            {{ a.observaciones || '—' }}
+          </td>
+        </ng-container>
+
+        <!-- ACCIONES -->
+        <ng-container matColumnDef="acciones">
+          <th mat-header-cell *matHeaderCellDef>Acciones</th>
+          <td mat-cell *matCellDef="let a">
+
+            <!-- Editar -->
+            <button mat-icon-button color="primary" (click)="editarAtencion(a)">
+              <mat-icon>edit</mat-icon>
+            </button>
+
+            <!-- Ver Detalle -->
+            <button mat-icon-button color="accent" (click)="verDetalleAtencion(a)">
+              <mat-icon>visibility</mat-icon>
+            </button>
+
+            <!-- Eliminar -->
+            <button mat-icon-button color="warn" (click)="eliminarAtencion(a)">
+              <mat-icon>delete</mat-icon>
+            </button>
+
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="columnasAtenciones"></tr>
+        <tr mat-row *matRowDef="let row; columns: columnasAtenciones"></tr>
+      </table>
+
+      <p *ngIf="atenciones.length === 0">
+        Todavía no hay atenciones registradas.
+      </p>
+    </mat-card>
+
+    <!-- 💉 Vacunas aplicadas (sin cambios) -->
+    <mat-card class="card-atenciones">
+      <div class="titulo-acciones">
+        <h3>Vacunas Aplicadas</h3>
+        <button mat-flat-button color="primary" (click)="nuevaVacuna()">
+          + Aplicar Vacuna
+        </button>
+      </div>
+
+      <!-- ... tu mismo código ... -->
+
+    </mat-card>
+
+  </div>
+</div>

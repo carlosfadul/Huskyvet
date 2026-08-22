@@ -1,0 +1,101 @@
+<h3 mat-dialog-title>{{ data ? 'Editar Empleado' : 'Nuevo Empleado' }}</h3>
+
+<form [formGroup]="empleadoForm" (ngSubmit)="guardar()">
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Nombre</mat-label>
+    <input matInput formControlName="empleado_nombre" required />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Apellido</mat-label>
+    <input matInput formControlName="empleado_apellido" required />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Cédula</mat-label>
+    <input matInput formControlName="empleado_cedula" required />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Dirección</mat-label>
+    <input matInput formControlName="empleado_direccion" required />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Teléfono</mat-label>
+    <input matInput formControlName="empleado_telefono" required />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Email</mat-label>
+    <input matInput type="email" formControlName="empleado_email" />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Fecha de Nacimiento</mat-label>
+    <input matInput type="date" formControlName="empleado_fecha_nac" />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Rol</mat-label>
+    <mat-select formControlName="empleado_rol" required>
+      <mat-option value="veterinario">Veterinario</mat-option>
+      <mat-option value="asistente">Asistente</mat-option>
+      <mat-option value="recepcionista">Recepcionista</mat-option>
+      <mat-option value="administrador">Administrador</mat-option>
+      <mat-option value="limpieza">Limpieza</mat-option>
+      <mat-option value="otro">Otro</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Género</mat-label>
+    <mat-select formControlName="empleado_genero">
+      <mat-option value="masculino">Masculino</mat-option>
+      <mat-option value="femenino">Femenino</mat-option>
+      <mat-option value="otro">Otro</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Estado</mat-label>
+    <mat-select formControlName="empleado_estado">
+      <mat-option value="activo">Activo</mat-option>
+      <mat-option value="inactivo">Inactivo</mat-option>
+      <mat-option value="vacaciones">Vacaciones</mat-option>
+      <mat-option value="licencia">Licencia</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Fecha de Contratación</mat-label>
+    <input matInput type="date" formControlName="fecha_contratacion" required />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Fecha de Terminación</mat-label>
+    <input matInput type="date" formControlName="fecha_terminacion" />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Detalles</mat-label>
+    <textarea matInput formControlName="empleado_detalles"></textarea>
+  </mat-form-field>
+
+  <div class="full-width" style="margin-bottom: 1rem;">
+    <label for="foto">Foto del Empleado</label><br />
+    <input type="file" (change)="seleccionarFoto($event)" accept="image/*" />
+  </div>
+
+  <div *ngIf="fotoPreview" style="margin-bottom: 1rem;">
+    <strong>Vista previa:</strong><br />
+    <img [src]="fotoPreview" alt="Foto previa" width="120" style="border-radius: 10px;" />
+  </div>
+
+  <mat-dialog-actions align="end">
+    <button mat-button type="button" (click)="cancelar()">Cancelar</button>
+    <button mat-flat-button color="primary" type="submit" [disabled]="empleadoForm.invalid">
+      Guardar
+    </button>
+  </mat-dialog-actions>
+</form>

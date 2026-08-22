@@ -1,0 +1,60 @@
+.app-fondo {
+  background-image: url('/assets/fondos/fondo-huskyvet.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.app-contenido {
+  background-color: rgba(255, 255, 255, 0.85);
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.info-mascota {
+  margin-bottom: 20px;
+}
+
+.info-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-atenciones {
+  margin-top: 10px;
+}
+
+.titulo-acciones {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.bloque {
+  margin-top: 24px;
+}
+
+.bloque-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.form-tratamiento {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.form-tratamiento label {
+  display: flex;
+  flex-direction: column;
+  font-size: 13px;
+}
+

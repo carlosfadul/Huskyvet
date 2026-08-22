@@ -1,0 +1,46 @@
+<h2 mat-dialog-title>{{ titulo }}</h2>
+
+<div mat-dialog-content>
+  <form [formGroup]="form">
+
+    <mat-form-field class="full">
+      <mat-label>Vacuna</mat-label>
+      <mat-select formControlName="vacuna_id">
+        <mat-option *ngFor="let v of vacunas" [value]="v.vacuna_id">
+          {{ v.vacuna_nombre }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="full">
+      <mat-label>Fecha de aplicación</mat-label>
+      <input matInput type="date" formControlName="fecha_aplicacion" />
+    </mat-form-field>
+
+    <mat-form-field class="full">
+      <mat-label>Lote</mat-label>
+      <input matInput formControlName="lote" />
+    </mat-form-field>
+
+    <mat-form-field class="full">
+      <mat-label>Dosis</mat-label>
+      <input matInput formControlName="dosis" />
+    </mat-form-field>
+
+    <mat-form-field class="full">
+      <mat-label>Próxima dosis</mat-label>
+      <input matInput type="date" formControlName="proxima_dosis" />
+    </mat-form-field>
+
+    <mat-form-field class="full">
+      <mat-label>Observaciones</mat-label>
+      <textarea matInput rows="2" formControlName="observaciones"></textarea>
+    </mat-form-field>
+
+  </form>
+</div>
+
+<div mat-dialog-actions align="end">
+  <button mat-stroked-button (click)="cancelar()">Cancelar</button>
+  <button mat-flat-button color="primary" (click)="guardar()">Guardar</button>
+</div>

@@ -1,0 +1,49 @@
+<button mat-button class="white-button" routerLink="../">← Volver</button>
+<h2>Productos</h2>
+<button mat-raised-button color="primary" (click)="abrirFormulario()">+ Nuevo Producto</button>
+
+<table mat-table [dataSource]="productos" class="mat-elevation-z8">
+
+  <ng-container matColumnDef="foto_producto">
+    <th mat-header-cell *matHeaderCellDef> Foto </th>
+    <td mat-cell *matCellDef="let p">
+      <img *ngIf="p.foto_producto" [src]="p.foto_producto" alt="Foto" width="40" height="40" style="border-radius: 4px;">
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="nombre_producto">
+    <th mat-header-cell *matHeaderCellDef> Nombre </th>
+    <td mat-cell *matCellDef="let p"> {{ p.nombre_producto }} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="categoria_producto">
+    <th mat-header-cell *matHeaderCellDef> Categoría </th>
+    <td mat-cell *matCellDef="let p"> {{ p.categoria_producto }} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="precioVenta_producto">
+    <th mat-header-cell *matHeaderCellDef> Precio Venta </th>
+    <td mat-cell *matCellDef="let p"> ${{ p.precioVenta_producto }} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="producto_estado">
+    <th mat-header-cell *matHeaderCellDef> Estado </th>
+    <td mat-cell *matCellDef="let p"> {{ p.producto_estado }} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="acciones">
+    <th mat-header-cell *matHeaderCellDef> Acciones </th>
+    <td mat-cell *matCellDef="let p">
+      <button mat-icon-button (click)="abrirFormulario(p)">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-icon-button color="warn" (click)="eliminarProducto(p.producto_id)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+  <tr mat-row *matRowDef="let row; columns: columnas;"></tr>
+</table>
+
