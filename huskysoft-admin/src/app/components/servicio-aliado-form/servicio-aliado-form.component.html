@@ -1,24 +1,39 @@
-<h2>Servicio del Aliado</h2>
+<h2 mat-dialog-title>{{ data.servicio ? 'Editar servicio' : 'Nuevo servicio' }}</h2>
 
-<form [formGroup]="form">
-  
-  <label>Nombre</label>
-  <input type="text" formControlName="nombre_servicioAliado">
+<form [formGroup]="form" (ngSubmit)="guardar()">
+  <div mat-dialog-content class="form-grid">
+    <mat-form-field appearance="outline">
+      <mat-label>Nombre del servicio</mat-label>
+      <input matInput type="text" formControlName="nombre_servicioAliado">
+      <mat-error>Ingresa el nombre del servicio</mat-error>
+    </mat-form-field>
 
-  <label>Detalles</label>
-  <textarea formControlName="detalle_servicioAliado"></textarea>
+    <mat-form-field appearance="outline">
+      <mat-label>Precio</mat-label>
+      <input matInput type="number" min="0" formControlName="precio_servicio">
+      <span matTextPrefix>$&nbsp;</span>
+      <mat-error>Ingresa un precio válido</mat-error>
+    </mat-form-field>
 
-  <label>Precio</label>
-  <input type="number" formControlName="precio_servicio">
+    <mat-form-field appearance="outline">
+      <mat-label>Estado</mat-label>
+      <mat-select formControlName="servicio_estado">
+        <mat-option value="activo">Activo</mat-option>
+        <mat-option value="inactivo">Inactivo</mat-option>
+      </mat-select>
+    </mat-form-field>
 
-  <label>Estado</label>
-  <select formControlName="servicio_estado">
-    <option value="activo">Activo</option>
-    <option value="inactivo">Inactivo</option>
-  </select>
+    <mat-form-field appearance="outline" class="detalles">
+      <mat-label>Detalles del servicio</mat-label>
+      <textarea matInput rows="3" formControlName="detalle_servicioAliado"></textarea>
+    </mat-form-field>
+  </div>
 
-  <div class="botones">
-    <button mat-button (click)="cancelar()">Cancelar</button>
-    <button mat-flat-button color="primary" (click)="guardar()">Guardar</button>
+  <div mat-dialog-actions align="end">
+    <button mat-stroked-button type="button" (click)="cancelar()">Cancelar</button>
+    <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid">
+      <mat-icon>save</mat-icon>
+      Guardar servicio
+    </button>
   </div>
 </form>

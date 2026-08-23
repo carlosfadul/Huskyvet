@@ -51,7 +51,13 @@ exports.getMascotas = async (req, res) => {
 exports.getMascotaById = async (req, res) => {
     try {
         const { id } = req.params;
-        const [rows] = await db.query('SELECT * FROM Mascota WHERE mascota_id = ?', [id]);
+    const [rows] = await db.query(
+      `SELECT m.*, c.cliente_cedula, c.cliente_nombre, c.cliente_apellido
+       FROM Mascota m
+       INNER JOIN Cliente c ON c.cliente_id = m.cliente_id
+       WHERE m.mascota_id = ?`,
+      [id]
+    );
 
         if (rows.length === 0) {
             return res.status(404).json({ message: 'Mascota no encontrada' });

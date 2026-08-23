@@ -2,6 +2,13 @@
 
 <h2>Detalle de venta #{{ ventaId }}</h2>
 
+<div class="acciones">
+  <button mat-stroked-button type="button" (click)="volverAVentas()">
+    <mat-icon>arrow_back</mat-icon>
+    Volver a ventas
+  </button>
+</div>
+
 <p *ngIf="venta">
   <strong>Cliente ID:</strong> {{ venta.cliente_id }} |
   <strong>Fecha:</strong> {{ venta.venta_fecha | date:'short' }} |

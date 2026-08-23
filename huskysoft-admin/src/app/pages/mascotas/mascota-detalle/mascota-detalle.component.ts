@@ -10,6 +10,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { FormsModule } from '@angular/forms';
 
 import { MascotaService } from '../../../services/mascota.service';
+import { ClienteService } from '../../../services/cliente.service';
 import { AtencionService } from '../../../services/atencion.service';
 import { AplicacionVacunaService } from '../../../services/aplicacion-vacuna.service';
 import { AplicacionDesparasitanteService } from '../../../services/aplicacion-desparasitante.service';
@@ -93,6 +94,7 @@ export class MascotaDetalleComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private mascotaService: MascotaService,
+    private clienteService: ClienteService,
     private atencionService: AtencionService,
     private aplicacionVacunaService: AplicacionVacunaService,
     private aplicacionDesparasitanteService: AplicacionDesparasitanteService,
@@ -120,7 +122,23 @@ export class MascotaDetalleComponent implements OnInit {
   // ---------- Mascota ----------
   cargarMascota(): void {
     this.mascotaService.getMascotaById(this.mascotaId).subscribe({
-      next: (m: any) => (this.mascota = m),
+      next: (m: any) => {
+        this.mascota = m;
+
+        if (m.cliente_id && !m.cliente_nombre) {
+          this.clienteService.getClienteById(m.cliente_id).subscribe({
+            next: (cliente: any) => {
+              this.mascota = {
+                ...this.mascota,
+                cliente_nombre: cliente.cliente_nombre,
+                cliente_apellido: cliente.cliente_apellido,
+                cliente_cedula: cliente.cliente_cedula
+              };
+            },
+            error: (err: any) => console.error('Error al cargar dueño', err)
+          });
+        }
+      },
       error: (err: any) => console.error('Error al cargar mascota', err)
     });
   }

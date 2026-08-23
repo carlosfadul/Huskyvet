@@ -1,7 +1,7 @@
 :host {
   display: flex;
   min-height: 100vh;
-  background: linear-gradient(135deg, #005f57 0%, #00a896 50%, #26b8aa 100%);
+  background: linear-gradient(135deg, #0a2d57 0%, #1764bf 54%, #4bb4e8 100%);
   position: relative;
   overflow: hidden;
 }
@@ -13,7 +13,7 @@
   right: -5%;
   width: 50%;
   height: 120%;
-  background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.08) 0%, transparent 70%);
+  background: radial-gradient(ellipse at center, rgba(176, 229, 255, 0.22) 0%, transparent 70%);
   pointer-events: none;
 }
 
@@ -24,7 +24,7 @@
   left: -10%;
   width: 60%;
   height: 80%;
-  background: radial-gradient(ellipse at center, rgba(245, 158, 11, 0.06) 0%, transparent 70%);
+  background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.12) 0%, transparent 70%);
   pointer-events: none;
 }
 
@@ -95,10 +95,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #fff;
+  background: rgba(248, 251, 255, 0.98);
   position: relative;
   z-index: 1;
-  box-shadow: -20px 0 60px rgba(0, 0, 0, 0.15);
+  box-shadow: -20px 0 60px rgba(7, 38, 77, 0.2);
 }
 
 .login-card {
@@ -114,13 +114,13 @@
 .login-card mat-card-title {
   font-size: 26px;
   font-weight: 700;
-  color: #1f2937;
+  color: #0c2d55;
   margin-bottom: 8px;
 }
 
 .login-subtitle {
   font-size: 14px;
-  color: #6b7280;
+  color: #59718c;
   margin-bottom: 32px;
 }
 
@@ -129,9 +129,9 @@
 }
 
 .error-banner {
-  background: #fef2f2;
-  border: 1px solid #fecaca;
-  color: #dc2626;
+  background: #fff1f2;
+  border: 1px solid #fecdd3;
+  color: #be123c;
   border-radius: 10px;
   padding: 12px 16px;
   font-size: 13px;
@@ -150,13 +150,13 @@
 
 .forgot {
   font-size: 13px;
-  color: #00a896;
+  color: #1764bf;
   text-decoration: none;
   font-weight: 500;
   transition: color 0.2s ease;
 
   &:hover {
-    color: #007a6e;
+    color: #0c2d55;
   }
 }
 

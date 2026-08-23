@@ -16,7 +16,13 @@ exports.getPedidos = async (req, res) => {
 exports.getPedidoById = async (req, res) => {
   const id = req.params.id;
   try {
-    const [rows] = await db.query('SELECT * FROM Pedido WHERE pedido_id = ?', [id]);
+    const [rows] = await db.query(
+      `SELECT p.*, pr.nombre_proveedor AS proveedor_nombre
+       FROM Pedido p
+       INNER JOIN Proveedor pr ON pr.proveedor_id = p.proveedor_id
+       WHERE p.pedido_id = ?`,
+      [id]
+    );
     if (rows.length === 0) {
       return res.status(404).json({ message: 'Pedido no encontrado' });
     }
@@ -32,7 +38,14 @@ exports.getPedidosBySucursalId = async (req, res) => {
   const sucursal_id = req.params.sucursal_id;
   try {
     const [rows] = await db.query(
-      'SELECT * FROM Pedido WHERE sucursal_id = ? ORDER BY pedido_fecha DESC',
+      `SELECT p.*, pr.nombre_proveedor AS proveedor_nombre,
+          COALESCE(SUM(d.detallePedido_cantidad * d.detallePedido_precio), p.total, 0) AS total_calculado
+       FROM Pedido p
+       INNER JOIN Proveedor pr ON pr.proveedor_id = p.proveedor_id
+       LEFT JOIN DetallePedido d ON d.pedido_id = p.pedido_id
+       WHERE p.sucursal_id = ?
+       GROUP BY p.pedido_id
+       ORDER BY p.pedido_fecha DESC`,
       [sucursal_id]
     );
     res.json(rows);
@@ -53,15 +66,25 @@ exports.createPedido = async (req, res) => {
     pedido_detalles,
     fecha_entrega_estimada,
     fecha_entrega_real,
-    subtotal,
+    subtotal: subtotalRecibido,
     impuestos,
     descuentos,
     total,
     metodo_pago
+    ,detalles
   } = req.body;
 
+  const connection = await db.getConnection();
   try {
-    const [result] = await db.query(
+    await connection.beginTransaction();
+
+    const pedidoDetalles = Array.isArray(detalles) ? detalles : [];
+    const subtotal = pedidoDetalles.reduce(
+      (total, detalle) => total + Number(detalle.detallePedido_cantidad || 0) * Number(detalle.detallePedido_precio || 0),
+      0
+    );
+
+    const [result] = await connection.query(
       `INSERT INTO Pedido (
         sucursal_id, proveedor_id, usuario_id, pedido_fecha, pedido_estado,
         pedido_detalles, fecha_entrega_estimada, fecha_entrega_real,
@@ -76,19 +99,39 @@ exports.createPedido = async (req, res) => {
         pedido_detalles,
         fecha_entrega_estimada,
         fecha_entrega_real,
-        subtotal,
+        subtotal || subtotalRecibido || null,
         impuestos,
         descuentos,
-        total,
+        total || subtotal || subtotalRecibido || null,
         metodo_pago
       ]
     );
+
+    for (const detalle of pedidoDetalles) {
+      await connection.query(
+        `INSERT INTO DetallePedido
+         (pedido_id, producto_id, detallePedido_cantidad, detallePedido_precio, cantidad_recibida)
+         VALUES (?, ?, ?, ?, ?)`,
+        [
+          result.insertId,
+          detalle.producto_id,
+          detalle.detallePedido_cantidad,
+          detalle.detallePedido_precio,
+          detalle.cantidad_recibida || 0
+        ]
+      );
+    }
+
+    await connection.commit();
     res
       .status(201)
       .json({ message: 'Pedido creado correctamente', pedido_id: result.insertId });
   } catch (error) {
+    await connection.rollback();
     console.error('Error al crear el pedido:', error);
     res.status(500).json({ message: 'Error al crear el pedido' });
+  } finally {
+    connection.release();
   }
 };
 

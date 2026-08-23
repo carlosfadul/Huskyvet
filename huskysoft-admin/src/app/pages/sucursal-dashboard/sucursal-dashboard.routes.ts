@@ -69,6 +69,14 @@ export const sucursalDashboardRoutes: Routes = [
         loadComponent: () =>
           import('../pedidos/detalle-pedido/detalle-pedido.component')
             .then(m => m.DetallePedidoComponent)
+      },
+
+      // Servicios contratados a un aliado
+      {
+        path: 'aliados/:aliadoId/servicios',
+        loadComponent: () =>
+          import('../aliados/servicios-aliado/servicios-aliado.component')
+            .then(m => m.ServiciosAliadoComponent)
       }
     ]
   }

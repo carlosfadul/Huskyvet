@@ -11,6 +11,7 @@ export interface DetallePedido {
   detallePedido_cantidad: number;
   detallePedido_precio: number;
   cantidad_recibida: number;
+  nombre_producto?: string;
 }
 
 @Injectable({

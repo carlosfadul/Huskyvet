@@ -11,6 +11,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { PedidoService, Pedido } from '../../services/pedido.service';
 import { PedidoFormComponent } from '../../components/pedido-form/pedido-form.component';
+import { ProveedorService } from '../../services/proveedor.service';
 
 @Component({
   selector: 'app-pedidos',
@@ -34,7 +35,7 @@ export class PedidosComponent implements OnInit {
   displayedColumns: string[] = [
     'pedido_id',
     'pedido_fecha',
-    'proveedor_id',
+    'proveedor_nombre',
     'total',
     'pedido_estado',
     'acciones'
@@ -46,17 +47,28 @@ export class PedidosComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private pedidoService: PedidoService,
+    private proveedorService: ProveedorService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
-  this.route.parent?.paramMap.subscribe(params => {
-    this.sucursalId = Number(params.get('sucursalId'));
-    this.veterinariaId = Number(params.get('veterinariaId'));
+  this.route.paramMap.subscribe(() => {
+    this.sucursalId = this.obtenerParametroRuta('sucursalId');
+    this.veterinariaId = this.obtenerParametroRuta('veterinariaId');
     this.cargarPedidos();
   });
 }
+
+  private obtenerParametroRuta(nombre: string): number {
+    let ruta: ActivatedRoute | null = this.route;
+    while (ruta) {
+      const valor = ruta.snapshot.paramMap.get(nombre);
+      if (valor !== null) return Number(valor);
+      ruta = ruta.parent;
+    }
+    return 0;
+  }
 
   cargarPedidos(): void {
     if (!this.sucursalId) return;
@@ -65,6 +77,21 @@ export class PedidosComponent implements OnInit {
     this.pedidoService.getPedidosPorSucursal(this.sucursalId).subscribe({
       next: pedidos => {
         this.dataSource.data = pedidos;
+
+        if (pedidos.some(pedido => !pedido.proveedor_nombre)) {
+          this.proveedorService.getProveedores().subscribe({
+            next: proveedores => {
+              const nombres = new Map(
+                proveedores.map(proveedor => [proveedor.proveedor_id, proveedor.nombre_proveedor])
+              );
+              this.dataSource.data = pedidos.map(pedido => ({
+                ...pedido,
+                proveedor_nombre: pedido.proveedor_nombre || nombres.get(pedido.proveedor_id!)
+              }));
+            },
+            error: err => console.error('Error al resolver proveedores', err)
+          });
+        }
       },
       error: err => {
         console.error('Error al obtener pedidos', err);
@@ -78,7 +105,8 @@ export class PedidosComponent implements OnInit {
 
   nuevoPedido(): void {
     const dialogRef = this.dialog.open(PedidoFormComponent, {
-      width: '500px',
+      width: 'min(760px, calc(100vw - 32px))',
+      maxWidth: 'calc(100vw - 32px)',
       data: {
         sucursalId: this.sucursalId,
         veterinariaId: this.veterinariaId,
@@ -95,7 +123,8 @@ export class PedidosComponent implements OnInit {
 
   editarPedido(pedido: Pedido): void {
     const dialogRef = this.dialog.open(PedidoFormComponent, {
-      width: '500px',
+      width: 'min(760px, calc(100vw - 32px))',
+      maxWidth: 'calc(100vw - 32px)',
       data: {
         sucursalId: this.sucursalId,
         veterinariaId: this.veterinariaId,
@@ -128,6 +157,19 @@ export class PedidosComponent implements OnInit {
         });
       }
     });
+  }
+
+  verDetallePedido(pedido: Pedido): void {
+    this.router.navigate([
+      '/veterinaria',
+      this.veterinariaId,
+      'sucursal',
+      this.sucursalId,
+      'dashboard',
+      'pedidos',
+      pedido.pedido_id,
+      'detalle'
+    ]);
   }
 
  volverASucursales(): void {

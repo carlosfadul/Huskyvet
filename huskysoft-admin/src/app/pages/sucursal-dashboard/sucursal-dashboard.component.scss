@@ -1,12 +1,12 @@
 .dashboard-container {
   height: 100vh;
-  background-color: #f0f4f5;
+  background: #edf4fb;
 }
 
 /* ---- Sidebar ---- */
 .sidenav {
   width: 260px;
-  background: linear-gradient(180deg, #004440 0%, #005f57 50%, #007a6e 100%) !important;
+  background: linear-gradient(180deg, #0b2d55 0%, #104879 56%, #12608d 100%) !important;
   border: none !important;
   border-radius: 0 !important;
   display: flex;
@@ -26,7 +26,7 @@
   width: 44px;
   height: 44px;
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(110, 203, 255, 0.2);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -74,7 +74,7 @@
 }
 
 ::ng-deep .sidenav .mat-mdc-list-item:hover {
-  background-color: rgba(255, 255, 255, 0.08) !important;
+  background-color: rgba(126, 211, 255, 0.14) !important;
   color: #fff !important;
 }
 
@@ -84,7 +84,8 @@
 }
 
 ::ng-deep .sidenav .active-link {
-  background-color: rgba(255, 255, 255, 0.15) !important;
+  background-color: rgba(126, 211, 255, 0.22) !important;
+  box-shadow: inset 3px 0 0 #8ed8ff;
   color: #fff !important;
   font-weight: 600;
 }
@@ -118,12 +119,17 @@
 
 /* ---- Main content area ---- */
 .main-content {
-  background-color: #f0f4f5 !important;
+  background: linear-gradient(135deg, #edf4fb 0%, #f8fbff 100%) !important;
   border-radius: 0 !important;
   padding: 0 !important;
 }
 
 .content-wrapper {
-  padding: 24px;
+  padding: 28px;
   min-height: calc(100vh - 48px);
+}
+
+@media (max-width: 760px) {
+  .sidenav { width: 220px; }
+  .content-wrapper { padding: 18px; }
 }

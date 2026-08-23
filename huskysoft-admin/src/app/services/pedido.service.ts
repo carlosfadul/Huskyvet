@@ -15,6 +15,15 @@ export interface Pedido {
   impuestos?: number;
   descuentos?: number;
   total?: number;
+  total_calculado?: number;
+  detalles?: DetallePedido[];
+}
+
+export interface DetallePedido {
+  producto_id: number;
+  detallePedido_cantidad: number;
+  detallePedido_precio: number;
+  cantidad_recibida?: number;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -27,7 +36,7 @@ export class PedidoService {
     return this.http.get<Pedido[]>(`${this.apiUrl}/sucursal/${sucursalId}`);
   }
 
-  createPedido(data: Partial<Pedido>): Observable<Pedido> {
+  createPedido(data: Partial<Pedido> & { detalles?: DetallePedido[] }): Observable<Pedido> {
     return this.http.post<Pedido>(this.apiUrl, data);
   }
 

@@ -72,6 +72,10 @@ export class LoginComponent {
           localStorage.setItem('token', resp.token);
         }
 
+        if (resp?.usuario) {
+          localStorage.setItem('usuario', JSON.stringify(resp.usuario));
+        }
+
         this.loading = false;
         this.router.navigate(['/dashboard']); // ajusta la ruta si usas otra
       },

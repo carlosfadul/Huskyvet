@@ -325,7 +325,8 @@ export class DetalleNominaComponent implements OnInit {
       this.veterinariaId,
       'sucursal',
       this.sucursalId,
-      'nomina'  // 👈 singular
+      'dashboard',
+      'nomina'
     ])
     .catch(() => this.location.back());
 }

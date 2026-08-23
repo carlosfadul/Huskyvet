@@ -1,8 +1,17 @@
-<h2>Servicios del Aliado</h2>
-
-<button mat-flat-button color="primary" (click)="nuevoServicio()">
-  + Nuevo Servicio
-</button>
+<div class="header-row">
+  <div>
+    <button mat-stroked-button type="button" (click)="volverAAliados()">
+      <mat-icon>arrow_back</mat-icon>
+      Volver a aliados
+    </button>
+    <h2>Servicios del aliado</h2>
+    <p>Administra los servicios disponibles para este aliado.</p>
+  </div>
+  <button mat-flat-button color="primary" (click)="nuevoServicio()">
+    <mat-icon>add</mat-icon>
+    Nuevo servicio
+  </button>
+</div>
 
 <table mat-table [dataSource]="servicios" class="mat-elevation-z8" *ngIf="servicios.length">
 
@@ -16,9 +25,18 @@
     <td mat-cell *matCellDef="let s">{{ s.precio_servicio | currency }}</td>
   </ng-container>
 
+  <ng-container matColumnDef="detalle">
+    <th mat-header-cell *matHeaderCellDef>Detalle</th>
+    <td mat-cell *matCellDef="let s">{{ s.detalle_servicioAliado || 'Sin detalle' }}</td>
+  </ng-container>
+
   <ng-container matColumnDef="estado">
     <th mat-header-cell *matHeaderCellDef>Estado</th>
-    <td mat-cell *matCellDef="let s">{{ s.servicio_estado }}</td>
+    <td mat-cell *matCellDef="let s">
+      <span class="estado" [class.inactivo]="s.servicio_estado === 'inactivo'">
+        {{ s.servicio_estado | titlecase }}
+      </span>
+    </td>
   </ng-container>
 
   <ng-container matColumnDef="acciones">

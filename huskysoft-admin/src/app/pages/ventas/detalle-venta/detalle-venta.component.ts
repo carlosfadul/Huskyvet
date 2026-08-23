@@ -2,7 +2,7 @@
 
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
@@ -90,6 +90,7 @@ export class DetalleVentaComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private fb: FormBuilder,
     private ventaService: VentaService,
     private productoService: ProductoService,
@@ -98,8 +99,8 @@ export class DetalleVentaComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.veterinariaId = Number(this.route.snapshot.paramMap.get('veterinariaId'));
-    this.sucursalId = Number(this.route.snapshot.paramMap.get('sucursalId'));
+    this.veterinariaId = Number(this.route.parent?.snapshot.paramMap.get('veterinariaId'));
+    this.sucursalId = Number(this.route.parent?.snapshot.paramMap.get('sucursalId'));
     this.ventaId = Number(this.route.snapshot.paramMap.get('ventaId'));
 
     this.detalleForm = this.fb.group({
@@ -112,6 +113,17 @@ export class DetalleVentaComponent implements OnInit {
     this.cargarVenta();
     this.cargarProductos();
     this.cargarDetalles();
+  }
+
+  volverAVentas(): void {
+    this.router.navigate([
+      '/veterinaria',
+      this.veterinariaId,
+      'sucursal',
+      this.sucursalId,
+      'dashboard',
+      'ventas'
+    ]);
   }
 
   cargarProductos(): void {

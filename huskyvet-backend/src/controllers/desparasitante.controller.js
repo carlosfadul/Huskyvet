@@ -6,7 +6,7 @@ const db = require('../database');
 // Obtener todos
 exports.getDesparasitantes = async (req, res) => {
   try {
-    const [rows] = await db.promise().query(
+    const [rows] = await db.query(
       'SELECT * FROM Desparasitante ORDER BY desparasitante_nombre'
     );
     res.json(rows);
@@ -20,7 +20,7 @@ exports.getDesparasitantes = async (req, res) => {
 exports.getDesparasitanteById = async (req, res) => {
   const { id } = req.params;
   try {
-    const [rows] = await db.promise().query(
+    const [rows] = await db.query(
       'SELECT * FROM Desparasitante WHERE desparasitante_id = ?',
       [id]
     );
@@ -48,7 +48,7 @@ exports.createDesparasitante = async (req, res) => {
       peso_maximo
     } = req.body;
 
-    const [result] = await db.promise().query(
+    const [result] = await db.query(
       `INSERT INTO Desparasitante (
          desparasitante_nombre,
          desparasitante_laboratorio,
@@ -71,12 +71,10 @@ exports.createDesparasitante = async (req, res) => {
       ]
     );
 
-    const [rows] = await db
-      .promise()
-      .query(
-        'SELECT * FROM Desparasitante WHERE desparasitante_id = ?',
-        [result.insertId]
-      );
+    const [rows] = await db.query(
+      'SELECT * FROM Desparasitante WHERE desparasitante_id = ?',
+      [result.insertId]
+    );
 
     res.status(201).json(rows[0]);
   } catch (err) {
@@ -100,7 +98,7 @@ exports.updateDesparasitante = async (req, res) => {
       peso_maximo
     } = req.body;
 
-    await db.promise().query(
+    await db.query(
       `UPDATE Desparasitante SET
          desparasitante_nombre = ?,
          desparasitante_laboratorio = ?,
@@ -124,12 +122,10 @@ exports.updateDesparasitante = async (req, res) => {
       ]
     );
 
-    const [rows] = await db
-      .promise()
-      .query(
-        'SELECT * FROM Desparasitante WHERE desparasitante_id = ?',
-        [id]
-      );
+    const [rows] = await db.query(
+      'SELECT * FROM Desparasitante WHERE desparasitante_id = ?',
+      [id]
+    );
     res.json(rows[0]);
   } catch (err) {
     console.error('Error al actualizar desparasitante:', err);
@@ -141,9 +137,10 @@ exports.updateDesparasitante = async (req, res) => {
 exports.deleteDesparasitante = async (req, res) => {
   const { id } = req.params;
   try {
-    await db
-      .promise()
-      .query('DELETE FROM Desparasitante WHERE desparasitante_id = ?', [id]);
+    await db.query(
+      'DELETE FROM Desparasitante WHERE desparasitante_id = ?',
+      [id]
+    );
     res.json({ message: 'Desparasitante eliminado correctamente' });
   } catch (err) {
     console.error('Error al eliminar desparasitante:', err);

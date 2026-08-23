@@ -1,22 +1,22 @@
 /* ============================================================
    Huskyvet — Global Styles
-   Color system: teal/cyan primary, neutral grays, warm accents
+  Color system: deep blue primary, cyan accents, cool surfaces
    ============================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
 
 :root {
-  /* Primary ramp (teal) */
-  --hv-primary-50:  #e0f7f5;
-  --hv-primary-100: #b2ebe6;
-  --hv-primary-200: #80dcd4;
-  --hv-primary-300: #4dc9bd;
-  --hv-primary-400: #26b8aa;
-  --hv-primary-500: #00a896;
-  --hv-primary-600: #009687;
-  --hv-primary-700: #007a6e;
-  --hv-primary-800: #005f57;
-  --hv-primary-900: #004440;
+  /* Primary ramp (blue) */
+  --hv-primary-50:  #eef6ff;
+  --hv-primary-100: #d9eaff;
+  --hv-primary-200: #b9d8ff;
+  --hv-primary-300: #8bbcff;
+  --hv-primary-400: #5798f5;
+  --hv-primary-500: #2878d8;
+  --hv-primary-600: #1764bf;
+  --hv-primary-700: #14529d;
+  --hv-primary-800: #123f78;
+  --hv-primary-900: #0c2d55;
 
   /* Accent ramp (warm amber) */
   --hv-accent-50:  #fff8e6;
@@ -49,10 +49,10 @@
   --hv-gray-900: #111827;
 
   /* Surfaces */
-  --hv-bg: #f0f4f5;
+  --hv-bg: #edf4fb;
   --hv-surface: #ffffff;
-  --hv-surface-alt: #f9fafb;
-  --hv-border: #e5e7eb;
+  --hv-surface-alt: #f5f9fe;
+  --hv-border: #d9e4f0;
 
   /* Shadows */
   --hv-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
@@ -78,7 +78,7 @@ html, body {
   height: 100%;
   margin: 0;
   padding: 0;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
   background-color: var(--hv-bg);
   color: var(--hv-gray-800);
   font-size: 14px;
@@ -87,9 +87,7 @@ html, body {
 
 /* Background image for the app */
 body {
-  background-image: url('assets/fondos/fondo-huskyvet.png');
-  background-size: cover;
-  background-position: center;
+  background-image: linear-gradient(135deg, #edf4fb 0%, #e5f0fc 48%, #f8fbff 100%);
   background-attachment: fixed;
 }
 
@@ -101,6 +99,15 @@ mat-sidenav-container,
 .mat-sidenav-content {
   background-color: var(--hv-surface);
   border-radius: var(--hv-radius-md);
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 3px solid rgba(40, 120, 216, 0.35);
+  outline-offset: 2px;
 }
 
 /* Do NOT blanket-remove shadows — let cards have depth */
@@ -165,15 +172,12 @@ mat-sidenav-container,
 .app-fondo {
   min-height: 100vh;
   padding: var(--hv-space-3);
-  background-image: url('/assets/fondos/fondo-huskyvet.png');
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
+  background: linear-gradient(135deg, #eaf3fc 0%, #f8fbff 58%, #dfeefe 100%);
 }
 
 .app-contenido {
-  background-color: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(8px);
+  background-color: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(12px);
   border-radius: var(--hv-radius-lg);
   padding: var(--hv-space-3);
   margin: var(--hv-space-2);

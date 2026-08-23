@@ -8,8 +8,7 @@ import { environment } from '../../environments/environment';
 })
 export class AtencionService {
 
-  // 👉 Debe coincidir con app.js: app.use(`${API}/atenciones`, atencionRoutes);
-  private baseUrl = `${environment.apiUrl}/atenciones`;
+  private baseUrl = `${environment.apiUrl}/atencion`;
 
   constructor(private http: HttpClient) {}
 

@@ -8,7 +8,7 @@ import { tap } from 'rxjs/operators';
 export interface LoginDto { username: string; password: string; }
 export interface LoginRes { token: string; /* opcional: user, roles, etc. */ }
 
-const TOKEN_KEY = 'auth_token';
+const TOKEN_KEY = 'token';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -21,6 +21,10 @@ export class AuthService {
           localStorage.setItem(TOKEN_KEY, res.token);
         })
       );
+  }
+
+  changePassword(data: { currentPassword: string; newPassword: string }) {
+    return this.http.post(`${environment.apiUrl}/auth/change-password`, data);
   }
 
   logout() {

@@ -14,9 +14,11 @@
             {{ mascota.mascota_sexo }}
           </p>
           <p>
-            Dueño:
-            {{ mascota.cliente_nombre }} {{ mascota.cliente_apellido }}
-            ({{ mascota.cliente_cedula }})
+            <ng-container *ngIf="mascota.cliente_nombre; else cargandoDueno">
+              Dueño: {{ mascota.cliente_nombre }} {{ mascota.cliente_apellido }}
+              ({{ mascota.cliente_cedula }})
+            </ng-container>
+            <ng-template #cargandoDueno>Dueño: Cargando...</ng-template>
           </p>
         </div>
 

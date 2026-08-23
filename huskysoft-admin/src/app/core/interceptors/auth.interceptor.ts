@@ -3,7 +3,7 @@ import { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { environment } from '../../../environments/environment';
 
-const TOKEN_KEY = 'auth_token'; // <-- usa la misma clave que guardas tras el login
+const TOKEN_KEY = 'token';
 const API_URL = environment.apiUrl?.replace(/\/+$/, '') || '';
 
 function getToken(): string | null {

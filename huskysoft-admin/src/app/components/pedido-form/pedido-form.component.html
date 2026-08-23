@@ -1,30 +1,78 @@
 <h2 mat-dialog-title>{{ titulo }}</h2>
 
 <div mat-dialog-content [formGroup]="form" class="form-container">
-  <mat-form-field appearance="fill" class="full-width">
-    <mat-label>Proveedor</mat-label>
-    <mat-select formControlName="proveedor_id">
-      <mat-option *ngFor="let pr of proveedores" [value]="pr.proveedor_id">
-        {{ pr.nombre_proveedor || pr.proveedor_nombre || pr.proveedor_id }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
+  <div class="datos-pedido">
+    <mat-form-field appearance="outline">
+      <mat-label>Proveedor</mat-label>
+      <mat-select formControlName="proveedor_id">
+        <mat-option *ngFor="let pr of proveedores" [value]="pr.proveedor_id">
+          {{ pr.nombre_proveedor || pr.proveedor_nombre || pr.proveedor_id }}
+        </mat-option>
+      </mat-select>
+      <mat-error>Selecciona un proveedor</mat-error>
+    </mat-form-field>
 
-  <mat-form-field appearance="fill" class="full-width">
-    <mat-label>Fecha del pedido</mat-label>
-    <input matInput [matDatepicker]="picker" formControlName="pedido_fecha" />
-    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-datepicker #picker></mat-datepicker>
-  </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Fecha del pedido</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="pedido_fecha" />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
 
-  <mat-form-field appearance="fill" class="full-width">
-    <mat-label>Estado</mat-label>
-    <mat-select formControlName="pedido_estado">
-      <mat-option *ngFor="let e of estados" [value]="e">{{ e }}</mat-option>
-    </mat-select>
-  </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Estado</mat-label>
+      <mat-select formControlName="pedido_estado">
+        <mat-option *ngFor="let e of estados" [value]="e">
+          {{ e | titlecase }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
 
-  <mat-form-field appearance="fill" class="full-width">
+  <div formArrayName="detalles" class="detalles-pedido">
+    <div class="detalles-header">
+      <strong>Productos del pedido</strong>
+      <button mat-stroked-button type="button" (click)="agregarDetalle()">
+        <mat-icon>add</mat-icon>
+        Agregar producto
+      </button>
+    </div>
+
+    <div
+      class="detalle-row"
+      *ngFor="let detalle of detalles.controls; let i = index"
+      [formGroupName]="i"
+    >
+      <mat-form-field appearance="outline">
+        <mat-label>Producto</mat-label>
+        <mat-select formControlName="producto_id" (selectionChange)="actualizarPrecio(detalle)">
+          <mat-option *ngFor="let producto of productos" [value]="producto.producto_id">
+            {{ producto.nombre_producto }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Cantidad</mat-label>
+        <input matInput type="number" min="1" formControlName="detallePedido_cantidad" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Precio de compra</mat-label>
+        <input matInput type="number" min="0.01" formControlName="detallePedido_precio" />
+      </mat-form-field>
+
+      <button mat-icon-button type="button" aria-label="Quitar producto" matTooltip="Quitar producto" (click)="quitarDetalle(i)">
+        <mat-icon>delete_outline</mat-icon>
+      </button>
+    </div>
+
+    <div class="subtotal-pedido">
+      Subtotal: {{ subtotalDetalles() | currency:'COP':'symbol':'1.0-0' }}
+    </div>
+  </div>
+
+  <mat-form-field appearance="outline" class="full-width">
     <mat-label>Detalles / observaciones</mat-label>
     <textarea
       matInput

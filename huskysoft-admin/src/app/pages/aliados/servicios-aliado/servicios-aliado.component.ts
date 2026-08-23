@@ -1,5 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
@@ -25,17 +25,40 @@ import { ServicioAliadoFormComponent } from '../../../components/servicio-aliado
 export class ServiciosAliadoComponent implements OnInit {
 
   private route = inject(ActivatedRoute);
+  private router = inject(Router);
   private servicioAliadoService = inject(ServicioAliadoService);
   private dialog = inject(MatDialog);
 
   aliadoId!: number;
   servicios: any[] = [];
 
-  displayedColumns = ['nombre', 'precio', 'estado', 'acciones'];
+  displayedColumns = ['nombre', 'detalle', 'precio', 'estado', 'acciones'];
 
   ngOnInit(): void {
     this.aliadoId = Number(this.route.snapshot.paramMap.get('aliadoId'));
     this.cargarServicios();
+  }
+
+  volverAAliados(): void {
+    this.router.navigate([
+      '/veterinaria',
+      this.obtenerParametroRuta('veterinariaId'),
+      'sucursal',
+      this.obtenerParametroRuta('sucursalId'),
+      'dashboard',
+      'configuracion',
+      'aliados'
+    ]);
+  }
+
+  private obtenerParametroRuta(nombre: string): number {
+    let ruta: ActivatedRoute | null = this.route;
+    while (ruta) {
+      const valor = ruta.snapshot.paramMap.get(nombre);
+      if (valor !== null) return Number(valor);
+      ruta = ruta.parent;
+    }
+    return 0;
   }
 
   cargarServicios(): void {
@@ -47,7 +70,8 @@ export class ServiciosAliadoComponent implements OnInit {
 
   nuevoServicio(): void {
     const ref = this.dialog.open(ServicioAliadoFormComponent, {
-      width: '600px',
+      width: 'min(680px, calc(100vw - 32px))',
+      maxWidth: 'calc(100vw - 32px)',
       data: { aliadoId: this.aliadoId }
     });
 
@@ -58,7 +82,8 @@ export class ServiciosAliadoComponent implements OnInit {
 
   editar(servicio: any): void {
     const ref = this.dialog.open(ServicioAliadoFormComponent, {
-      width: '600px',
+      width: 'min(680px, calc(100vw - 32px))',
+      maxWidth: 'calc(100vw - 32px)',
       data: { servicio }
     });
 

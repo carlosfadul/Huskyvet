@@ -1,0 +1,2 @@
+PS C:\Users\user\Documents\Huskyvet\huskyvet-backend> npm start
+PS C:\Users\user\Documents\huskyvet\huskysoft-admin> npm run ng serve

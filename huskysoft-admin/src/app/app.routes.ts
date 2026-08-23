@@ -93,14 +93,6 @@ export const routes: Routes = [
       },
       
       {
-        path: 'veterinaria/:veterinariaId/sucursal/:sucursalId/dashboard/aliados/:aliadoId/servicios',
-        canActivate: [authGuard],
-        loadComponent: () =>
-          import('./pages/aliados/servicios-aliado/servicios-aliado.component')
-            .then(m => m.ServiciosAliadoComponent),
-      },
-
-      {
         path: 'tratamientos',
         canActivate: [authGuard],
         loadComponent: () =>
@@ -151,8 +143,6 @@ export const routes: Routes = [
             .then(m => m.DesparasitantesComponent),
       },
 
-      // default de configuración -> usuarios
-      { path: '', pathMatch: 'full', redirectTo: 'usuarios' },
     ],
   },
 

@@ -1,4 +1,29 @@
-/* estilos para servicios del aliado */
 :host {
   display: block;
+}
+
+.header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+h2 { margin: 0; color: #16324f; }
+p { margin: 6px 0 0; color: #617487; }
+table { width: 100%; }
+.estado {
+  display: inline-flex;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #dff5e8;
+  color: #167044;
+  font-size: 12px;
+  font-weight: 700;
+}
+.estado.inactivo { background: #fce4e4; color: #a12b2b; }
+@media (max-width: 700px) {
+  .header-row { align-items: flex-start; flex-direction: column; }
+  table { display: block; overflow-x: auto; white-space: nowrap; }
 }

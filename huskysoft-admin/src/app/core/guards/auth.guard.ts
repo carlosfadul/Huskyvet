@@ -2,7 +2,7 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router, UrlTree } from '@angular/router';
 
-const TOKEN_KEY = 'auth_token';
+const TOKEN_KEY = 'token';
 
 function isLoggedIn(): boolean {
   try {

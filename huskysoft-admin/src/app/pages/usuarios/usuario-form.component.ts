@@ -36,8 +36,9 @@ import { MatButtonModule } from '@angular/material/button';
 
     <form [formGroup]="form" (ngSubmit)="guardar()" enctype="multipart/form-data">
       <mat-form-field appearance="fill" class="full-width">
-        <mat-label>Empleado</mat-label>
-        <mat-select formControlName="empleado_id" required>
+        <mat-label>Empleado (opcional)</mat-label>
+        <mat-select formControlName="empleado_id">
+          <mat-option [value]="null">Sin empleado asociado</mat-option>
           <mat-option *ngFor="let emp of empleados" [value]="emp.empleado_id">
             {{ emp.empleado_nombre }} {{ emp.empleado_apellido }} ({{ emp.empleado_cedula }})
           </mat-option>
@@ -132,9 +133,9 @@ export class UsuarioFormComponent implements OnInit {
     const veterinariaId = this.data?.veterinaria_id;
 
     this.form = this.fb.group({
-      empleado_id: [this.data?.empleado_id || '', Validators.required],
-      sucursal_id: [sucursalId || '', Validators.required],
-      veterinaria_id: [veterinariaId || '', Validators.required],
+      empleado_id: [this.data?.empleado_id || null],
+      sucursal_id: [sucursalId || null],
+      veterinaria_id: [veterinariaId || null],
       usuario_username: [this.data?.usuario_username || '', Validators.required],
       usuario_password: ['', this.data?.usuario_id ? [] : Validators.required],
       usuario_tipo: [this.data?.usuario_tipo || '', Validators.required],
@@ -177,6 +178,11 @@ export class UsuarioFormComponent implements OnInit {
   }
 
   guardar() {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
+
     const formData = new FormData();
     for (const key in this.form.value) {
       if (this.form.value[key] !== null && this.form.value[key] !== '') {

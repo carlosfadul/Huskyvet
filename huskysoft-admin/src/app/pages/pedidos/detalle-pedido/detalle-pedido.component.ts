@@ -36,7 +36,7 @@ export class DetallePedidoComponent implements OnInit {
   dataSource = new MatTableDataSource<DetallePedido>([]);
   displayedColumns: string[] = [
     'detallePedido_id',
-    'producto_id',
+    'nombre_producto',
     'detallePedido_cantidad',
     'cantidad_recibida',
     'detallePedido_precio',
@@ -55,11 +55,21 @@ export class DetallePedidoComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.veterinariaId = Number(this.route.snapshot.paramMap.get('veterinariaId'));
-    this.sucursalId = Number(this.route.snapshot.paramMap.get('sucursalId'));
+    this.veterinariaId = this.obtenerParametroRuta('veterinariaId');
+    this.sucursalId = this.obtenerParametroRuta('sucursalId');
     this.pedidoId = Number(this.route.snapshot.paramMap.get('pedidoId'));
 
     this.cargarDetalles();
+  }
+
+  private obtenerParametroRuta(nombre: string): number {
+    let ruta: ActivatedRoute | null = this.route;
+    while (ruta) {
+      const valor = ruta.snapshot.paramMap.get(nombre);
+      if (valor !== null) return Number(valor);
+      ruta = ruta.parent;
+    }
+    return 0;
   }
 
   cargarDetalles(): void {

@@ -23,6 +23,23 @@ exports.getDetallePedidoById = async (req, res) => {
   }
 };
 
+exports.getDetallesByPedidoId = async (req, res) => {
+  try {
+    const [rows] = await db.query(
+      `SELECT d.*, p.nombre_producto
+       FROM DetallePedido d
+       INNER JOIN Producto p ON p.producto_id = d.producto_id
+       WHERE d.pedido_id = ?
+       ORDER BY d.detallePedido_id`,
+      [req.params.pedido_id]
+    );
+    res.status(200).json(rows);
+  } catch (error) {
+    console.error('Error al obtener detalles por pedido:', error);
+    res.status(500).json({ message: 'Error al obtener los detalles del pedido' });
+  }
+};
+
 exports.createDetallePedido = async (req, res) => {
   try {
     const {
